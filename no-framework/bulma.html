@@ -3,16 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My First Bulma Example</title>
     <link
     rel="stylesheet"
-    href="https://newpaltz-examples.onrender.com/static/bulma/todo.html"
-    >
+    href="https://cdn.jsdeliver.net/npm/bulmla@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<style>
+    /*Fixes the spacing between menu bar*/
+    *{
+        padding:0;
+        margin:0;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-style: none;
+    }
+    .navbar {
+        background-color: #5ad7be;
+        color: #111010;
+        padding: 1rem;
+        font-weight: none;
+    }
+    .navbar-item{
+        color: #fff;
+    }
+    .navbar-item-a{
+        color: #fff;
+        padding-left: 15px;
+    }
+    .navbar-item-dropdown{
+        color: #fff;
+        padding-left: 30px;
+        border: none;
+        outline: none;
+        background-color: inherit;
+        font-family: inherit;
+        width: 100px;
+        text-align: left;
+        display:inline-block;
+        position: relative;
+        box-shadow: #b4adad;
+    }
+    .navbar-item-dropdown:hover{
+        background-color: #32948e;
+        padding: auto;
+        position: absolute;
+    }
+    .navbar-item-dropdown-content{
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        background-color: #fff;
+        width: 100px;
+        left : 0;
+        line-height: 30px;
+        padding:0;
+        margin:0;
+    }
+    .navbar-item-dropdown-item{
+        background-color: #fff;
+        color: #b4adad;
+        text-align: left;
+        text-indent: 5px;
+        padding: 10px;
+        width :100px;
+        box-sizing: border-box; /* Includes padding in the element's width */
+    text-decoration: none;
+    display: block; /
+    }
+    .navbar-item-dropdown:hover .navbar-item-dropdown-content{
+        display: block;
+    }
+    .navbar-item-dropdown-item:hover{
+        background-color: #f9f9f9;
+    }
+    /*
+    .list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .item {
+        background-color: #f9f9f9;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+    }*/
+    </style>
 </head>
 <body>
+    <div class="navbar">
+        <a class ="navbar-item" href="https://bulma.io">Bulma: a</a>
+        <a class ="navbar-item-a" href="https://bulma.io">Home</a>
+        <Button class="navbar-item-dropdown">Docs
+            <i class="fa-solid fa-angle-down"></i>
+            <ul class="navbar-item-dropdown-content">
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/start/overview/">Overview</a></li>
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io">Modifiers</a></li>
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/columns/basics/">Columns</a></li>
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/layout/container/">Layout</a></li>
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/form/general/">Form</a></li>
+            <hr>
+            <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/elements/box/">Elements</a></li>
+            <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/components/breadcrumb/">Components</a></li>
+                </ul>
+        </Button>
+    </div>
+    </div>
+<!--
     <div class="container">
-        <h1 class="title">My Bulma Example</h1>
-
+        <h1 class="title">somthing more else</h1>
         <ul class="list">
             <li class="item">Something</li>
             <li class="item">Something else</li>
@@ -21,7 +119,6 @@
         <div class="message is-success">
             <div class="message-body">This is a success alert</div>
         </div>
-    </div>
-
+    </div>-->
 </body>
 </html>
