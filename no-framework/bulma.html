@@ -5,83 +5,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My First Bulma Example</title>
-    <link rel="stylesheet" href="https://cdn.jsdeliver.net/npm/bulmla@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <style>
-        /*Fixes the spacing between menu bar*/
+        /* General resets */
         * {
-            padding: 0;
             margin: 0;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            font-style: none;
-            content: "width=device-width";
+            padding: 0;
+            box-sizing: border-box;
         }
 
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        /* Navbar styles */
         .navbar {
             background-color: #5ad7be;
-            color: #111010;
             padding: 1rem;
-            font-weight: none;
-
         }
 
         .navbar-item {
             color: #fff;
+            margin-right: 15px;
         }
 
-        .navbar-item-a {
-            color: #fff;
-            padding-left: 15px;
-        }
-
-        .navbar-item-dropdown {
-            color: #fff;
-            padding-left: 30px;
-            border: none;
-            outline: none;
-            background-color: inherit;
-            font-family: inherit;
-            width: 100px;
-            text-align: left;
-            display: inline-block;
-            position: relative;
-            box-shadow: #b4adad;
-        }
-
-        .navbar-item-dropdown:hover {
+        .navbar-item:hover {
             background-color: #32948e;
-            padding: auto;
-            position: absolute;
+        }
+
+        /* Dropdown menu */
+        .navbar-item-dropdown {
+            position: relative;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .navbar-item-dropdown:hover .navbar-item-dropdown-content {
+            display: block;
         }
 
         .navbar-item-dropdown-content {
             display: none;
-            flex-direction: column;
             position: absolute;
             background-color: #fff;
-            width: 100px;
+            top: 100%;
             left: 0;
-            line-height: 30px;
-            padding: 0;
-            margin: 0;
-            list-style-type: none;
+            min-width: 150px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-item-dropdown-item {
-            background-color: #fff;
-            color: #b4adad;
-            text-align: left;
-            text-indent: 5px;
             padding: 10px;
-            width: 100px;
-            box-sizing: border-box;
-            /* Includes padding in the element's width */
+            color: #333;
             text-decoration: none;
-            display: block;/
-        }
-
-        .navbar-item-dropdown:hover .navbar-item-dropdown-content {
             display: block;
         }
 
@@ -89,110 +69,221 @@
             background-color: #f9f9f9;
         }
 
+        /* Component and Tabs Container */
+        .content-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 20px;
+        }
 
+        /* Component box styles */
+        .component-box {
+            width: 200px;
+            margin-right: 20px;
+        }
 
-        .component-box-header {
-            background-color: #ffffff;
-            margin-top: 45px;
-            margin-left: 30px;
+        .component-box-header,
+        .component-box-body,
+        .component-box-bottom {
+            background-color: #fff;
+            padding: 15px;
             border-radius: 5px;
             box-shadow: 0 .5em 1em -.125em rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .02);
-            /*creates the shadow*/
-            width: 150px;
-            padding-left: 20px;
-            padding-right: 20px;
+            margin-bottom: 10px;
+        }
+
+        .component-box-header {
             display: flex;
-            height: 30px;
-            font-size: 1.5em;
-            padding-top: 15px;
-            padding-bottom: 0px;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2em;
             cursor: pointer;
         }
 
-        .component-box-header-icon {
-            margin-left: 50px;
-            padding: 0px;
-        }
-
-        .component-box-body p {
-            background-color: #ffffff;
-            padding: 20px;
-            margin-top: 4px;
-            margin-left: 30px;
-            border-radius: 1px;
-            box-shadow: 0 .5em 1em -.125em rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .02);
-            /*creates the shadow*/
-            width: 150px;
-            height: 180px;
-            font-size: 16px;
+        .component-box-body {
+            font-size: 1em;
             color: grey;
+            line-height: 1.5;
         }
 
+        /* Align buttons in a row */
         .component-box-bottom {
-            background-color: #ffffff;
-            border: none;
-            padding-top:10px;
-            padding-bottom: 10px;
-            padding-right: 20px;
-            padding-left: 20px;
-            margin-left: 30px;
-            margin-top: 1px;
-            border-radius: 1px;
-            box-shadow: 0 .5em 1em -.125em rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .02);
-            /*creates the shadow*/
-            width: 150px;
-            height: 30px;
-            font-size: 16px;
-            outline: none;
-        
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
+        .component-box-bottom a {
+            color: #32948e;
+            text-decoration: none;
+        }
+
+        .component-box-bottom a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tabs container with specific width */
+        .tabs-container {
+            width: 400px;
+        }
+
+        .tabs ul {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 .5em 1em -.125em rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .02);
+        }
+
+        .tabs ul li {
+            margin: 0;
+        }
+
+        .tabs ul li a {
+            padding: 10px;
+        }
+
+        /* Ensure tabs don't stretch full width */
+        .tabs.is-boxed ul {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Align checkboxes */
+        .checkbox-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-bar {
+            margin-top: 20px;
+        }
+
+        .message-header p {
+            color: white;
+        }
     </style>
 </head>
 
 <body>
+
     <div class="navbar">
         <a class="navbar-item" href="https://bulma.io">Bulma: a</a>
-        <a class="navbar-item-a" href="https://bulma.io">Home</a>
-        <Button class="navbar-item-dropdown">Docs
+        <a class="navbar-item" href="https://bulma.io">Home</a>
+        <button class="navbar-item-dropdown">
+            Docs
             <i class="fa-solid fa-angle-down"></i>
             <ul class="navbar-item-dropdown-content">
-                <li><a class="navbar-item-dropdown-item"
-                        href="https://bulma.io/documentation/start/overview/">Overview</a></li>
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/start/overview/">Overview</a></li>
                 <li><a class="navbar-item-dropdown-item" href="https://bulma.io">Modifiers</a></li>
-                <li><a class="navbar-item-dropdown-item"
-                        href="https://bulma.io/documentation/columns/basics/">Columns</a></li>
-                <li><a class="navbar-item-dropdown-item"
-                        href="https://bulma.io/documentation/layout/container/">Layout</a></li>
-                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/form/general/">Form</a>
-                </li>
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/columns/basics/">Columns</a></li>
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/layout/container/">Layout</a></li>
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/form/general/">Form</a></li>
                 <hr class="dropdown-divider" />
-                <li><a class="navbar-item-dropdown-item"
-                        href="https://bulma.io/documentation/elements/box/">Elements</a></li>
-                <li><a class="navbar-item-dropdown-item"
-                        href="https://bulma.io/documentation/components/breadcrumb/">Components</a></li>
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/elements/box/">Elements</a></li>
+                <li><a class="navbar-item-dropdown-item" href="https://bulma.io/documentation/components/breadcrumb/">Components</a></li>
             </ul>
-        </Button>
+        </button>
     </div>
-    <div class="component-box-header">
-        <b>Component</b>
-        <div class="component-box-header-icon">
-            <i class="fa-solid fa-angle-down"></i>
-        </div>
-    </div>
-    <div class="component-box-body">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-            <a href="file:///Users/didi/Desktop/WebProgramming-Project/no-framework/bulma.html">@bulmaio</a>.
-            <a href="file:///Users/didi/Desktop/WebProgramming-Project/no-framework/bulma.html">#css</a>.
-            <a href="file:///Users/didi/Desktop/WebProgramming-Project/no-framework/bulma.html">#responsive</a>.
-            11:09 PM - 1 Jan 2016
-        </p>
-    </div>
-    <div class="component-box-bottom">
-        <button>Save</button>
-        <button>Edit</button>
-        <button>Delete</button>
-    </div>
-</body>
 
+    <!-- Main content with component and tabs -->
+    <div class="content-container">
+        <!-- Component section aligned to the left -->
+        <div class="component-box">
+            <div class="component-box-header">
+                <b>Component</b>
+                <i class="fa-solid fa-angle-down"></i>
+            </div>
+
+            <div class="component-box-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. <a href="#">@bulmaio</a>. <a href="#">#css</a>. <a href="#">#responsive</a>. 11:09 PM - 1 Jan 2016</p>
+            </div>
+
+            <!-- Buttons in one line -->
+            <div class="component-box-bottom">
+                <a href="#" class="card-footer-item">Save</a>
+                <a href="#" class="card-footer-item">Edit</a>
+                <a href="#" class="card-footer-item">Delete</a>
+            </div>
+        </div>
+
+        <!-- Tabs to the right -->
+        <div class="tabs-container">
+            <div class="tabs is-boxed">
+                <ul>
+                    <li class="is-active">
+                        <a>
+                            <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
+                            <span>Current</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="icon is-small"><i class="fa-solid fa-calendar-xmark"></i></span>
+                            <span>Completed</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="icon is-small"><i class="fa-solid fa-calendar-day"></i></span>
+                            <span>Upcoming</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="icon is-small"><i class="fa-solid fa-calendar"></i></span>
+                            <span>All</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Input bar below the tabs -->
+            <div class="input-bar">
+                <input class="input" type="text" placeholder="Enter text here">
+            </div>
+
+            <!-- Checkboxes -->
+            <form class="box">
+                <div class="checkbox-list">
+                    <div class="field">
+                        <label class="checkbox">
+                            <input type="checkbox" /> Make Bulma great again
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label class="checkbox">
+                            <input type="checkbox" /> Add some more features
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label class="checkbox">
+                            <input type="checkbox" /> Make a github account
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label class="checkbox">
+                            <input type="checkbox" /> Learn how to use github
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label class="checkbox">
+                            <input type="checkbox" /> Add a .gitignore file
+                        </label>
+                    </div>
+                </div>
+            </form>
+
+            <!-- "Make a GitHub Account" Notification -->
+            <article class="message is-primary">
+                <div class="message-header">
+                    <p>Make a github account</p>
+                    <button class="delete" aria-label="delete"></button>
+                </div>
+                <div class="message-body">
+                    Go to <a href="https://github.com/">github.com</a> and create an account.
+                    That's where you'll be able to share your work with the world.. 
+                    thats where we will be putting all of our code for this class.
+                </div>
+</body>
 </html>
