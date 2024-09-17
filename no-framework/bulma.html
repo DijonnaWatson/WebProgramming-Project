@@ -164,17 +164,24 @@
         }
 
         .menu-container {
-            display: flex;
+            display: block;
             justify-content: right;
             align-items: right;
-            margin-top: 5px;
-           
+            length: 75%;
+            position: top;
         }
 
+        .column{
+            display: block;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding: .75rem;
+}
+        
         .menu-container a {
             color: #96a1a1;
             text-decoration: none;
-
         }
     </style>
 
@@ -400,8 +407,12 @@
             </article>
         </div>
     </div>
-    <div class="menu-container">
-        <a> Table of Contents</a>
+    <div class="colunm is-one-quarter">
+        <div class="menu-container">
+            <a href="https://bulma.io">Home</a>
+            <a href="https://bulma.io">About</a>
+            <a href="https://bulma.io">Contact</a>
+        </div>
     </div>
 
 </body>
