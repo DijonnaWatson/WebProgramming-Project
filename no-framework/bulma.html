@@ -18,12 +18,21 @@
         body {
             font-family: Arial, sans-serif;
             font-size: 16px;
+            width: 100%;
+            max-width: 100vw;
+            /* Prevent overflow */
         }
 
         /* Navbar styles */
         .navbar {
             background-color: #5ad7be;
             padding: 1rem;
+            width: 100%;
+        }
+        .navbar-right {
+            display: flex;
+            margin-left: auto;
+            /* Push to the far right */
         }
 
         .navbar-item {
@@ -34,6 +43,39 @@
         .navbar-item:hover {
             background-color: #32948e;
         }
+
+        .navbar-item-twitter-box {
+            background-color: white;
+            width: 90px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Center the icon */
+            margin-right: 15px;
+        }
+
+        .navbar-item-download-box .icon,
+        .navbar-item-twitter-box .icon {
+            font-size: 1rem;
+            /* Increase the size of the icon */
+            color: black;
+        }
+
+        .download-text,
+        .tweet-text {
+            margin-left: 8px;
+            /* Adjust the space between the icon and text */
+        }
+
+        .navbar-item-download-box{
+            width: 90px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
 
         /* Dropdown menu */
         .navbar-item-dropdown {
@@ -72,14 +114,17 @@
         /* Component and Tabs Container */
         .content-container {
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
+            /* Space between elements */
             align-items: flex-start;
             padding: 20px;
+            max-width: 100vw;
+            /* Prevent overflow */
         }
 
         /* Component box styles */
         .component-box {
-            width: 200px;
+            width: 30%;
             margin-right: 20px;
         }
 
@@ -125,7 +170,7 @@
 
         /* Tabs container with specific width */
         .tabs-container {
-            width: 400px;
+            width: 40%;
         }
 
         .tabs ul {
@@ -159,29 +204,22 @@
             margin-top: 20px;
         }
 
-        .message-header p {
-            color: white;
-        }
-
-        .menu-container {
-            display: block;
-            justify-content: right;
-            align-items: right;
-            length: 75%;
-            position: top;
-        }
-
-        .column{
-            display: block;
-    flex-basis: 0;
-    flex-grow: 1;
-    flex-shrink: 1;
-    padding: .75rem;
-}
-        
-        .menu-container a {
+        .menu {
             color: #96a1a1;
             text-decoration: none;
+            width: 20%;
+            /* Adjust percentage as needed */
+            margin: 0 20px;
+        }
+
+        .menu-header {
+            font-size: 30px;
+            font-weight: bold;
+            color: black
+        }
+
+        .menu-sub-header {
+            font-size: 20px;
         }
     </style>
 
@@ -192,6 +230,7 @@
     <div class="navbar">
         <a class="navbar-item" href="https://bulma.io">Bulma: a</a>
         <a class="navbar-item" href="https://bulma.io">Home</a>
+
         <button class="navbar-item-dropdown">
             Docs
             <i class="fa-solid fa-angle-down"></i>
@@ -212,6 +251,24 @@
                         href="https://bulma.io/documentation/components/breadcrumb/">Components</a></li>
             </ul>
         </button>
+    <div class="navbar-right">
+        
+            <a class="navbar-item-twitter-box" href="https://twitter.com/bulmaio">
+                <span class="icon">
+                    <i class="fa-brands fa-twitter"></i>
+                    <span class="tweet-text">Tweet</span>
+                </span>
+            </a>
+        
+        
+            <a class="navbar-item-download-box">
+                <span class="icon">
+                    <i class="fa-solid fa-download"></i>
+                    <span class="download-text">Download</span>
+                </span>
+            </a>
+        
+    </div>
     </div>
 
     <!-- Main content with component and tabs -->
@@ -235,6 +292,7 @@
                 <a href="#" class="card-footer-item">Edit</a>
                 <a href="#" class="card-footer-item">Delete</a>
             </div>
+
         </div>
 
         <!-- Tabs to the right -->
@@ -406,13 +464,41 @@
                 </div>
             </article>
         </div>
+
+        <aside class="menu">
+            <p class="menu-header">
+                Table of Contents
+            </p>
+            <p class="menu-sub-header">Intra-page navigation</p>
+            <p class="menu-label">General</p>
+            <ul class="menu-list">
+                <li><a>Dashboard</a></li>
+                <li><a>Customers</a></li>
+            </ul>
+            <p class="menu-label">Administration</p>
+            <ul class="menu-list">
+                <li><a>Team Settings</a></li>
+                <li>
+                    <a class="is-active">Manage Your Team</a>
+                    <ul>
+                        <li><a>Members</a></li>
+                        <li><a>Plugins</a></li>
+                        <li><a>Add a member</a></li>
+                    </ul>
+                </li>
+                <li><a>Invitations</a></li>
+                <li><a>Cloud Storage Environment Settings</a></li>
+                <li><a>Authentication</a></li>
+            </ul>
+            <p class="menu-label">Transactions</p>
+            <ul class="menu-list">
+                <li><a>Payments</a></li>
+                <li><a>Transfers</a></li>
+                <li><a>Balance</a></li>
+            </ul>
+        </aside>
     </div>
-    <div class="colunm is-one-quarter">
-        <div class="menu-container">
-            <a href="https://bulma.io">Home</a>
-            <a href="https://bulma.io">About</a>
-            <a href="https://bulma.io">Contact</a>
-        </div>
+
     </div>
 
 </body>
