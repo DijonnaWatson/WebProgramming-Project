@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ToDoList</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+    <div id="app">
+        <section class="section">
+            <div class="container">
+                <h1 class="title">ToDoList</h1>
+                <div class="field has-addons">
+                    <div class="control is-expanded">
+                        <input class="input" type="text" placeholder="Add a new task" v-model="newTask">
+                    </div>
+                    <div class="control">
+                        <a class="button is-info" @click="addTask">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Search task" v-model="search">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" v-model="showCompleted">
+                            Show completed tasks
+                        </label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="filter" value="all" v-model="filter">
+                            All
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="filter" value="active" v-model="filter">
+                            Active
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="filter" value="completed" v-model="filter">
+                            Completed
+                        </label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-danger" @click="clearCompleted">Clear completed</button>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <ul>
+                            <li v-for="task in filteredTasks" :key="task.id">
+                                <label class="checkbox">
+                                    <input type="checkbox" v-model="task.completed">
+                                    {{ task.title }}
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue
+
+        createApp({
+            setup() {
+                const newTask = ref('');
+                const tasks = ref([]);
+                let taskId = 0;//uniquw id for tasks 
+
+                function addTask() {
+                    if(newTask.value.trim()) {
+                        task.value.push({
+                            id: taskId++,
+                            title: newTask.value,
+                            completed: false
+                        });
+                        newTask.value = '';
+                    }
+                }
+
+                
+                return {
+                    newTask, tasks, addTask
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
