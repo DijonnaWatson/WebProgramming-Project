@@ -8,6 +8,21 @@
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <style>
+        .notification {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            margin-right: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,22 +35,16 @@
                         <input class="input" type="text" placeholder="Add a new task" v-model="newTask">
                     </div>
                     <div class="control">
-                        <a class="button is-info" @click="addTask">
-                            <i class="fas fa-plus"></i>
-                        </a>
+                        <div class="taskStyle">
+                            <a class="button is-info" @click="addTask">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="field">
                     <div class="control">
                         <input class="input" type="text" placeholder="Search task" v-model="search">
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <label class="checkbox">
-                            <input type="checkbox" v-model="showCompleted">
-                            Show completed tasks
-                        </label>
                     </div>
                 </div>
                 <div class="field">
@@ -56,24 +65,48 @@
                 </div>
                 <div class="field">
                     <div class="control">
-                        <button class="button is-danger" @click="clearCompleted">Clear completed</button>
+                        <button class="button is-danger" @click="clearCompletedTasks">Clear completed</button>
                     </div>
                 </div>
                 <div class="field">
-                    <div class="control">
-                        <ul>
-                            <li v-for="task in filteredTasks" :key="task.id">
-                                <label class="checkbox">
-                                    <input type="checkbox" v-model="task.completed">
-                                    {{ task.title }}
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul>
+                        <li v-for="task in tasks" :key="task.id">
+                            <label class="control">
+                                <input type="checkbox" v-model="task.completed">
+                                {{ task.title }}
+                                <button class="complete-button" @click="toggleComplete(task)"></button>
+                            </label>
+                        </li>
+                    </ul>
                 </div>
-                
+
             </div>
-        </section>
+            <div class="field">
+                <div class="column">
+                    <div class="column is-2">
+                        <div class="notification is-info">
+                            <p class="title">Total tasks</p>
+                            <p class="subtitle">{{ totalTasks }}</p>
+                        </div>
+                    </div>
+                    <!--
+                        <div class="column is-2">
+                            <div class="notification is-primary">
+                                <p class="title">Active tasks</p>
+                                <p class="subtitle">{{ activeTasks }}</p>
+                            </div>
+                        </div>
+                        <div class="column is-2">
+                            <div class="notification is-success">
+                                <p class="title">Completed tasks</p>
+                                <p class="subtitle">{{ completedTasks }}</p>
+                            </div>
+                        </div>
+                        -->
+                </div>
+            </div>
+    </div>
+    </section>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -87,8 +120,8 @@
                 let taskId = 0;//uniquw id for tasks 
 
                 function addTask() {
-                    if(newTask.value.trim()) {
-                        task.value.push({
+                    if (newTask.value.trim()) {
+                        tasks.value.push({
                             id: taskId++,
                             title: newTask.value,
                             completed: false
@@ -97,9 +130,29 @@
                     }
                 }
 
+
+                const totalTasks = Vue.computed(() => tasks.value.length);
+                const search = ref('');
+                const showCompleted = ref(true);
+                function toggleComplete(task) {
+                    task.completed = !task.completed; // Toggle the completed state
+                }
+                function clearCompletedTasks(id) {
+                    tasks.value = tasks.value.filter(tasks => !tasks.completed);//keep only the tasks not completed
+                    totalTasks.value = tasks.value.length;//update the total tasks
+                }
+                /** 
                 
+                 function activeTasks() {
+                     return tasks.value.filter(task => !task.completed).length;
+                 }
+                 function completedTasks() {
+                     return tasks.value.filter(task => task.completed).length;
+                 }*/
+
                 return {
-                    newTask, tasks, addTask
+                    newTask, tasks, addTask, totalTasks, search, toggleComplete, clearCompletedTasks,
+                    /**activeTasks, completedTasks*/
                 }
             }
         }).mount('#app')
