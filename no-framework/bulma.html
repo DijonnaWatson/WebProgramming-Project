@@ -47,11 +47,12 @@
             align-items: center;
             font-size: 2rem;
             margin-left: 5rem;
+            margin-right: 5rem;
             margin-top: 1rem;
-            padding:.1rem;
+            padding: .1rem;
             border-radius: .5rem;
             background-color: rgb(137, 216, 243);
-            width:90%;
+            width: 85%;
             flex-wrap: wrap;
         }
     </style>
@@ -90,7 +91,7 @@
                             Active
                         </label>
                         <label class="radio">
-                            <input type="radio" name="filter" value="completed" v-model="filter">
+                            <input type="radio" name="filter" value="completed" v-model="filter" @click="completedTask">
                             Completed
                         </label>
                     </div>
@@ -123,20 +124,8 @@
                         </li>
                     </ul>
                 </div>
-            <div class="field"></div>
-            <div class="column">
-                <div class="column1 is-2">
-                    <div class="notification is-info">
-                        <p class="title">Completed Tasks</p>
-                        <p class="subtitle">{{ totalTasks }}</p>
-                    </div>
-                </div>
             </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </section>
+        </section>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -148,6 +137,7 @@
                 const newTask = ref('');
                 const tasks = ref([]);
                 let taskId = 0;//unique id for tasks 
+                const totalTasks = Vue.computed(() => tasks.value.length);
 
                 function addTask() {
                     if (newTask.value.trim()) {
@@ -160,29 +150,24 @@
                     }
                 }
 
-
-                const totalTasks = Vue.computed(() => tasks.value.length);
-                const search = ref('');
-                const showCompleted = ref(true);
                 function toggleComplete(task) {
                     task.completed = !task.completed; // Toggle the completed state
                 }
-                function clearCompletedTasks(id) {
+                function clearCompletedTasks() {
                     tasks.value = tasks.value.filter(tasks => !tasks.completed);//keep only the tasks not completed
                     totalTasks.value = tasks.value.length;//update the total tasks
                 }
-                /** 
-                
-                function activeTasks() {
-                    return tasks.value.filter(task => !task.completed).length;
+                function completedTask() {
+                    return tasks.value.filter(task => task.completed);
                 }
-                function completedTasks() {
-                    return tasks.value.filter(task => task.completed).length;
-                }*/
-
                 return {
-                    newTask, tasks, addTask, totalTasks, search, toggleComplete, clearCompletedTasks,
-                    /**activeTasks, completedTasks*/
+                    newTask,
+                    tasks,
+                    addTask,
+                    totalTasks,
+                    toggleComplete,
+                    clearCompletedTasks,
+                    completedTask,
                 }
             }
         }).mount('#app')
