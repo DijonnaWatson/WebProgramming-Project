@@ -1,515 +1,519 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fitness Tracking Application</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
     <style>
-        /* General resets */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      /* General resets */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            width: 100%;
-            max-width: 100vw;
-            /* Prevent overflow */
-        }
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        width: 100%;
+        max-width: 100vw;
+        /* Prevent overflow */
+      }
 
-        /* Navbar styles */
-        .navbar {
-            background-color: #5ad7be;
-            padding: 1rem;
-            width: 100%;
-        }
-        .navbar-right {
-            display: flex;
-            margin-left: auto;
-            /* Push to the far right */
-        }
+      /* Navbar styles */
+      .navbar {
+        background-color: #5ad7be;
+        padding: 1rem;
+        width: 100%;
+      }
+      .navbar-right {
+        display: flex;
+        margin-left: auto;
+        /* Push to the far right */
+      }
 
+      .navbar-item-icon {
+        color: #fff;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 2rem;
+      }
 
-        .navbar-item-icon {
-            color: #fff;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 2rem;
-        }
+      .navbar-item-title {
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.5rem;
+        align-items: center;
+      }
 
-       .navbar-item-title {
-            color: #fff;
-            font-weight: bold;
-            font-size: 1.5rem;
-            align-items: center;
-        }
+      /* Component and Tabs Container */
+      .content-container {
+        display: flex;
+        justify-content: space-between;
+        /* Space between elements */
+        align-items: flex-start;
+        padding: 20px;
+        max-width: 100vw;
+        /* Prevent overflow */
+      }
 
-        /* Component and Tabs Container */
-        .content-container {
-            display: flex;
-            justify-content: space-between;
-            /* Space between elements */
-            align-items: flex-start;
-            padding: 20px;
-            max-width: 100vw;
-            /* Prevent overflow */
-        }
+      /* Component box styles */
+      .component-box {
+        width: 35%;
+        margin-right: 2rem;
+        padding: 0rem;
+      }
 
-        /* Component box styles */
-        .component-box {
-            width: 30%;
-            margin-right: 20px;
-        }
+      .component-box-header,
+      .component-box-body,
+      .component-box-bottom {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
+          0 0 0 1px rgba(10, 10, 10, 0.02);
+        margin-bottom: 10px;
+      }
 
-        .component-box-header,
-        .component-box-body,
-        .component-box-bottom {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 .5em 1em -.125em rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .02);
-            margin-bottom: 10px;
-        }
+      .component-box-header {
+        display: flex;
+        align-items: left;
+        font-size: 1.2em;
+        padding-top: 1.5rem;
+        cursor: pointer;
+        padding-bottom: 0rem;
+      }
 
-        .component-box-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
+      .component-box-body {
+        font-size: 1em;
+        color: grey;
+        line-height: 1.5;
+      }
 
-        .component-box-body {
-            font-size: 1em;
-            color: grey;
-            line-height: 1.5;
-        }
+      /* Align buttons in a row */
+      .component-box-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        /* Align buttons in a row */
-        .component-box-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      .component-box-bottom a {
+        color: #32948e;
+        text-decoration: none;
+      }
 
-        .component-box-bottom a {
-            color: #32948e;
-            text-decoration: none;
-        }
+      .component-box-bottom a:hover {
+        text-decoration: underline;
+      }
 
-        .component-box-bottom a:hover {
-            text-decoration: underline;
-        }
+      /* Tabs container with specific width */
+      .tabs-container {
+        width: 40%;
+      }
 
-        /* Tabs container with specific width */
-        .tabs-container {
-            width: 40%;
-        }
+      .tabs ul {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
+          0 0 0 1px rgba(10, 10, 10, 0.02);
+      }
 
-        .tabs ul {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fff;
-            box-shadow: 0 .5em 1em -.125em rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .02);
-        }
+      .tabs ul li {
+        margin: 0;
+      }
 
-        .tabs ul li {
-            margin: 0;
-        }
+      .tabs ul li a {
+        padding: 10px;
+      }
 
-        .tabs ul li a {
-            padding: 10px;
-        }
+      /* Ensure tabs don't stretch full width */
+      .tabs.is-boxed ul {
+        display: flex;
+        justify-content: space-between;
+      }
 
-        /* Ensure tabs don't stretch full width */
-        .tabs.is-boxed ul {
-            display: flex;
-            justify-content: space-between;
-        }
+      /* Align checkboxes */
+      .checkbox-list {
+        display: flex;
+        flex-direction: column;
+      }
 
-        /* Align checkboxes */
-        .checkbox-list {
-            display: flex;
-            flex-direction: column;
-        }
+      .input-bar {
+        margin-top: 20px;
+      }
 
-        .input-bar {
-            margin-top: 20px;
-        }
+      .menu {
+        color: #96a1a1;
+        text-decoration: none;
+        width: 20%;
+        /* Adjust percentage as needed */
+        margin: 0 20px;
+      }
 
-        .menu {
-            color: #96a1a1;
-            text-decoration: none;
-            width: 20%;
-            /* Adjust percentage as needed */
-            margin: 0 20px;
-        }
+      .menu-header {
+        font-size: 30px;
+        font-weight: bold;
+        color: black;
+      }
 
-        .menu-header {
-            font-size: 30px;
-            font-weight: bold;
-            color: black
-        }
-
-        .menu-sub-header {
-            font-size: 20px;
-        }
+      .menu-sub-header {
+        font-size: 20px;
+      }
     </style>
+  </head>
 
-</head>
-
-<body>
-
+  <body>
     <div class="navbar">
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-             <!-- <a class="navbar-item" href="https://bulma.io"> -->
-             <div class="navbar-item">
-                <a class="navbar-item-icon">
-                    <i class="fa-regular fa-heart"></i>
-                </a>
-            </div>
-          
-              <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-              </a>
-            </div>
-          
-            <div id="navbarBasicExample" class="navbar-menu">
-              <div class="navbar-start">
-                <a class="navbar-item">
-                  Home
-                </a>
-          
-                <div class="navbar-item has-dropdown is-hoverable">
-                  <a class="navbar-link">
-                    More
-                  </a>
-          
-                  <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                      About
-                    </a>
-                    <a class="navbar-item is-selected">
-                      Help
-                    </a>
-                    <a class="navbar-item">
-                      Contact
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item">
-                      Report an issue
-                    </a>
-                  </div>
-                </div>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <!-- <a class="navbar-item" href="https://bulma.io"> -->
+          <div class="navbar-item">
+            <a class="navbar-item-icon">
+              <i class="fa-regular fa-heart"></i>
+            </a>
+            <div class="navbar-item-title">Fitness Tracker</div>
+          </div>
 
-                <div class="navbar-item">
-                    <div class="navbar-item-title">
-                        Fitness Tracker
-                    </div>
-                </div>
-            </div>
-          
-              <div class="navbar-end">
-                <div class="navbar-item">
-                  <div class="buttons">
-                    <a class="button is-primary">
-                      <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                      Log in
-                    </a>
-                  </div>
-                </div>
+          <a
+            role="button"
+            class="navbar-burger"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+          >
+          </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item" href="http://127.0.0.1:5500/no-framework/proj.html"> Home </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link"> More </a>
+
+              <div class="navbar-dropdown">
+                <a class="navbar-item"> About </a>
+                <a class="navbar-item is-selected"> Help </a>
+                <a class="navbar-item"> Contact </a>
+                <hr class="navbar-divider" />
+                <a class="navbar-item"> Report an issue </a>
               </div>
             </div>
-          </nav>
-        
-    </div>
+          </div>
+
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                <a class="button is-primary">
+                  <strong>Sign up</strong>
+                </a>
+                <a class="button is-light"> Log in </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
 
     <!-- Main content with component and tabs -->
     <div class="content-container">
-        <!-- Component section aligned to the left -->
-        <div class="component-box">
-            <div class="component-box-header">
-                <b>Progress</b>  
-                <progress class="progress is-primary" value="30" max="100">
-        30%
-                </progress>
-            </div>
-
-            <div class="component-box-body">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. <a
-                        href="#">@bulmaio</a>. <a href="#">#css</a>. <a href="#">#responsive</a>. 11:09 PM - 1 Jan 2016
-                </p>
-            </div>
-
-            <!-- Buttons in one line -->
-            <div class="component-box-bottom">
-                <a href="#" class="card-footer-item">Save</a>
-                <a href="#" class="card-footer-item">Edit</a>
-                <a href="#" class="card-footer-item">Delete</a>
-            </div>
-
+      <!-- Component section aligned to the left -->
+      <div class="component-box">
+        <div class="component-box-header">
+          <b>Progress</b>
+          &nbsp;
+          &nbsp;
+          <progress class="progress is-primary" value="2" max="100">
+            2%
+          </progress>
         </div>
 
-        <!-- Tabs to the right -->
-        <div class="tabs-container">
-            <div class="tabs is-boxed">
-                <ul>
-                    <li class="is-active">
-                        <a>
-                            <i class="fa-solid fa-person-running"></i>
-                            <span>Running</span>
-                        </a>
-                    </li>
-                    <li > 
-                        <a>
-                            <i class="fa-solid fa-person-walking"></i>
-                            <span>Walking</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a>
-                            <i class="fa-solid fa-person-biking"></i>
-                            <span>Biking</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a>
-                            <i class="fa-solid fa-dumbbell"></i>
-                            <span>Weights</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Input bar below the tabs -->
-            <div class="input-bar">
-                <input class="input" type="text" placeholder="Enter text here">
-            </div>
-
-            <!-- Checkboxes -->
-            <form class="box">
-                <div class="checkbox-list">
-                    <div class="field">
-                        <label class="checkbox">
-                            <input type="checkbox" /> Make Bulma great again
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label class="checkbox">
-                            <input type="checkbox" /> Add some more features
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label class="checkbox">
-                            <input type="checkbox" /> Make a github account
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label class="checkbox">
-                            <input type="checkbox" /> Learn how to use github
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label class="checkbox">
-                            <input type="checkbox" /> Add a .gitignore file
-                        </label>
-                    </div>
-                </div>
-            </form>
-
-            <!-- "Make a GitHub Account" Notification -->
-            <article class="message is-primary">
-                <div class="message-header">
-                    <p>Make a github account</p>
-                    <button class="delete" aria-label="delete"></button>
-                </div>
-                <div class="message-body">
-                    Go to <a href="https://github.com/">github.com</a> and create an account.
-                    That's where you'll be able to share your work with the world..
-                    thats where we will be putting all of our code for this class.
-                </div>
-
-                <progress class="progress is-primary" value="60" max="100">
-                    60%
-                </progress>
-
-                <div class="field">
-                    <label class="label">Name</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Text input">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Username</label>
-                    <div class="control has-icons-left has-icons-right">
-                        <input class="input is-success" type="text" placeholder="Text input" value="bulma">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-user"></i>
-                        </span>
-                        <span class="icon is-small is-right">
-                            <i class="fas fa-check"></i>
-                        </span>
-                    </div>
-                    <p class="help is-success">This username is available</p>
-                </div>
-
-                <div class="field">
-                    <label class="label">Email</label>
-                    <div class="control has-icons-left has-icons-right">
-                        <input class="input is-danger" type="email" placeholder="Email input" value="hello@">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-envelope"></i>
-                        </span>
-                        <span class="icon is-small is-right">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </span>
-                    </div>
-                    <p class="help is-danger">This email is invalid</p>
-                </div>
-
-                <div class="field">
-                    <label class="label">Subject</label>
-                    <div class="control">
-                        <div class="select">
-                            <select>
-                                <option>Select dropdown</option>
-                                <option>With options</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Message</label>
-                    <div class="control">
-                        <textarea class="textarea" placeholder="Textarea"></textarea>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <div class="control">
-                        <label class="checkbox">
-                            <input type="checkbox">
-                            I agree to the <a href="#">terms and conditions</a>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <div class="control">
-                        <label class="radio">
-                            <input type="radio" name="question">
-                            Yes
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="question">
-                            No
-                        </label>
-                    </div>
-                </div>
-
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-link">Submit</button>
-                    </div>
-                    <div class="control">
-                        <button class="button is-link is-light">Cancel</button>
-                    </div>
-                </div>
-            </article>
+        <div class="component-box-body">
+          <p>
+            Tips for staying dedicated to your health.
+            Drink lots of water, eat healthy, and exercise regularly.
+            <!-- <a href="#">@bulmaio</a>. <a href="#">#css</a>.
+            <a href="#">#responsive</a>. 11:09 PM - 1 Jan 2016 -->
+          </p>
         </div>
 
-        <aside class="menu">
-            <p class="menu-header">
-                Table of Contents
-            </p>
-            <p class="menu-sub-header">Intra-page navigation</p>
-            <p class="menu-label">General</p>
-            <ul class="menu-list">
-                <li><a>Dashboard</a></li>
-                <li><a>Customers</a></li>
-            </ul>
-            <p class="menu-label">Administration</p>
-            <ul class="menu-list">
-                <li><a>Team Settings</a></li>
-                <li>
-                    <a class="is-active">Manage Your Team</a>
-                    <ul>
-                        <li><a>Members</a></li>
-                        <li><a>Plugins</a></li>
-                        <li><a>Add a member</a></li>
-                    </ul>
-                </li>
-                <li><a>Invitations</a></li>
-                <li><a>Cloud Storage Environment Settings</a></li>
-                <li><a>Authentication</a></li>
-            </ul>
-            <p class="menu-label">Transactions</p>
-            <ul class="menu-list">
-                <li><a>Payments</a></li>
-                <li><a>Transfers</a></li>
-                <li><a>Balance</a></li>
-            </ul>
-        </aside>
-    </div>
+        <!-- Buttons in one line -->
+        <div class="component-box-bottom">
+          <a href="#" class="card-footer-item">Save</a>
+          <a href="#" class="card-footer-item">Edit Goal</a>
+          <a href="#" class="card-footer-item">Delete</a>
+        </div>
+      </div>
 
+      <!-- Tabs to the right -->
+      <div class="tabs-container">
+        <div class="tabs is-boxed">
+          <ul>
+            <li class="is-active">
+              <a>
+                <i class="fa-solid fa-person-running"></i>
+                &nbsp;
+                <span>Running</span>
+              </a>
+            </li>
+            <li>
+              <a>
+                <i class="fa-solid fa-person-walking"></i>
+                &nbsp;
+                <span>Walking</span>
+              </a>
+            </li>
+            <li>
+              <a>
+                <i class="fa-solid fa-person-biking"></i>
+                &nbsp;
+                <span>Biking</span>
+              </a>
+            </li>
+            <li>
+              <a>
+               <i class="fa-solid fa-list"></i>
+               &nbsp;
+                <span>More</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Input bar below the tabs -->
+        <div class="input-bar">
+          <input class="input" type="text" placeholder="Enter text here" />
+        </div>
+
+        <!-- Checkboxes -->
+        <form class="box">
+          <div class="checkbox-list">
+            <div class="field">
+              <label class="checkbox">
+                <input type="checkbox" /> Make Bulma great again
+              </label>
+            </div>
+            <div class="field">
+              <label class="checkbox">
+                <input type="checkbox" /> Add some more features
+              </label>
+            </div>
+            <div class="field">
+              <label class="checkbox">
+                <input type="checkbox" /> Make a github account
+              </label>
+            </div>
+            <div class="field">
+              <label class="checkbox">
+                <input type="checkbox" /> Learn how to use github
+              </label>
+            </div>
+            <div class="field">
+              <label class="checkbox">
+                <input type="checkbox" /> Add a .gitignore file
+              </label>
+            </div>
+          </div>
+        </form>
+
+        <!-- "Make a GitHub Account" Notification -->
+        <article class="message is-primary">
+          <div class="message-header">
+            <p>Make a github account</p>
+            <button class="delete" aria-label="delete"></button>
+          </div>
+          <div class="message-body">
+            Go to <a href="https://github.com/">github.com</a> and create an
+            account. That's where you'll be able to share your work with the
+            world.. thats where we will be putting all of our code for this
+            class.
+          </div>
+
+          <progress class="progress is-primary" value="60" max="100">
+            60%
+          </progress>
+
+          <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Text input" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Username</label>
+            <div class="control has-icons-left has-icons-right">
+              <input
+                class="input is-success"
+                type="text"
+                placeholder="Text input"
+                value="bulma"
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </div>
+            <p class="help is-success">This username is available</p>
+          </div>
+
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control has-icons-left has-icons-right">
+              <input
+                class="input is-danger"
+                type="email"
+                placeholder="Email input"
+                value="hello@"
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-exclamation-triangle"></i>
+              </span>
+            </div>
+            <p class="help is-danger">This email is invalid</p>
+          </div>
+
+          <div class="field">
+            <label class="label">Subject</label>
+            <div class="control">
+              <div class="select">
+                <select>
+                  <option>Select dropdown</option>
+                  <option>With options</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Message</label>
+            <div class="control">
+              <textarea class="textarea" placeholder="Textarea"></textarea>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <label class="checkbox">
+                <input type="checkbox" />
+                I agree to the <a href="#">terms and conditions</a>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <label class="radio">
+                <input type="radio" name="question" />
+                Yes
+              </label>
+              <label class="radio">
+                <input type="radio" name="question" />
+                No
+              </label>
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link">Submit</button>
+            </div>
+            <div class="control">
+              <button class="button is-link is-light">Cancel</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <aside class="menu">
+        <p class="menu-header">Table of Contents</p>
+        <p class="menu-sub-header">Intra-page navigation</p>
+        <p class="menu-label">General</p>
+        <ul class="menu-list">
+          <li><a>Dashboard</a></li>
+          <li><a>Customers</a></li>
+        </ul>
+        <p class="menu-label">Administration</p>
+        <ul class="menu-list">
+          <li><a>Team Settings</a></li>
+          <li>
+            <a class="is-active">Manage Your Team</a>
+            <ul>
+              <li><a>Members</a></li>
+              <li><a>Plugins</a></li>
+              <li><a>Add a member</a></li>
+            </ul>
+          </li>
+          <li><a>Invitations</a></li>
+          <li><a>Cloud Storage Environment Settings</a></li>
+          <li><a>Authentication</a></li>
+        </ul>
+        <p class="menu-label">Transactions</p>
+        <ul class="menu-list">
+          <li><a>Payments</a></li>
+          <li><a>Transfers</a></li>
+          <li><a>Balance</a></li>
+        </ul>
+      </aside>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
-        const { createApp, ref } = Vue
+      const { createApp, ref } = Vue;
 
-        createApp({
-            setup() {
-                const newTask = ref('');
-                const tasks = ref([]);
-                let taskId = 0;//unique id for tasks 
-                const totalTasks = Vue.computed(() => tasks.value.length);
+      createApp({
+        setup() {
+          const newTask = ref("");
+          const tasks = ref([]);
+          let taskId = 0; //unique id for tasks
+          const totalTasks = Vue.computed(() => tasks.value.length);
 
-                function addTask() {
-                    if (newTask.value.trim()) {
-                        tasks.value.push({
-                            id: taskId++,
-                            title: newTask.value,
-                            completed: false
-                        });
-                        newTask.value = '';
-                    }
-                }
-
-                function toggleComplete(task) {
-                    task.completed = !task.completed; // Toggle the completed state
-                }
-                function clearCompletedTasks() {
-                    tasks.value = tasks.value.filter(tasks => !tasks.completed);//keep only the tasks not completed
-                    totalTasks.value = tasks.value.length;//update the total tasks
-                }
-                function completedTask() {
-                    return tasks.value.filter(task => task.completed);
-                }
-                return {
-                    newTask,
-                    tasks,
-                    addTask,
-                    totalTasks,
-                    toggleComplete,
-                    clearCompletedTasks,
-                    completedTask,
-                }
+          function addTask() {
+            if (newTask.value.trim()) {
+              tasks.value.push({
+                id: taskId++,
+                title: newTask.value,
+                completed: false,
+              });
+              newTask.value = "";
             }
-        }).mount('#app')
+          }
+
+          function toggleComplete(task) {
+            task.completed = !task.completed; // Toggle the completed state
+          }
+          function clearCompletedTasks() {
+            tasks.value = tasks.value.filter((tasks) => !tasks.completed); //keep only the tasks not completed
+            totalTasks.value = tasks.value.length; //update the total tasks
+          }
+          function completedTask() {
+            return tasks.value.filter((task) => task.completed);
+          }
+          return {
+            newTask,
+            tasks,
+            addTask,
+            totalTasks,
+            toggleComplete,
+            clearCompletedTasks,
+            completedTask,
+          };
+        },
+      }).mount("#app");
     </script>
-
-</body>
-
+  </body>
 </html>
