@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+//changed Index.vue name to lowercase 
 </script>
 
 <template>
