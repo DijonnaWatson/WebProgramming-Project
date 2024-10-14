@@ -24,6 +24,7 @@ const isOpen = ref(false)
         <div class="navbar-start">
           <RouterLink to="/" class="navbar-item">Home</RouterLink>
           <RouterLink to="/products" class="navbar-item">Shop</RouterLink>
+          <RouterLink to="/exerciselog" class="navbar-item">Fitness</RouterLink>
 
 
           <div class="navbar-item has-dropdown is-hoverable">
