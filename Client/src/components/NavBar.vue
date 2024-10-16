@@ -49,9 +49,9 @@ const isOpen = ref(false)
               <RouterLink to="/signup" class="button is-primary">
                 <strong>Sign up</strong>
               </RouterLink>
-              <a class="button is-light">
+              <RouterLink to="/login" class="button is-light">
                 Log in
-              </a>
+              </RouterLink>
             </div>
           </div>
         </div>

@@ -6,9 +6,6 @@ const name = ref('');
 const email = ref('');
 const password = ref('');
 
-// Define reactive variables for sign-in form data
-const signInEmail = ref('');
-const signInPassword = ref('');
 
 // Handle form submission for profile creation
 const createProfile = () => {
@@ -20,19 +17,12 @@ const createProfile = () => {
   password.value = '';
 };
 
-// Handle form submission for sign-in
-const signIn = () => {
-  // Perform form validation and submission logic here
-  console.log('Signed In:', { email: signInEmail.value, password: signInPassword.value });
-  // Reset form fields
-  signInEmail.value = '';
-  signInPassword.value = '';
-};
+
 </script>
 
 <template>
   <main>
-    <h1 class="app-title">Welcome to my Fitness App!</h1>
+    <h1 class="app-title">Start Your Fitness Journey With Us!</h1>
 
     <div class="forms-container">
       <section class="profile-creation">
@@ -52,22 +42,6 @@ const signIn = () => {
             <input v-model="password" type="password" id="password" required />
           </div>
           <button type="submit">Create Profile</button>
-        </form>
-      </section>
-
-      <section class="sign-in">
-        <h3>Welcome Back!</h3>
-        <h2>Login</h2>
-        <form @submit.prevent="signIn">
-          <div class="form-group">
-            <label for="signInEmail">Email:</label>
-            <input v-model="signInEmail" type="email" id="signInEmail" required />
-          </div>
-          <div class="form-group">
-            <label for="signInPassword">Password:</label>
-            <input v-model="signInPassword" type="password" id="signInPassword" required />
-          </div>
-          <button type="submit">Sign In</button>
         </form>
       </section>
     </div>
@@ -97,7 +71,7 @@ main {
   margin-top: 2rem;
 }
 
-.sign-in, .profile-creation {
+.profile-creation {
   background: #36d3fa;
   padding: 2rem;
   border-radius: 1rem;
@@ -106,13 +80,13 @@ main {
   flex: 1;
 }
 
-.sign-in h2, .profile-creation h2 {
+ .profile-creation h2 {
   margin-bottom: 1.5rem;
   color: #333;
   font-size: 2rem;
 }
 
-.sign-in h3, .profile-creation h3 {
+.profile-creation h3 {
   margin-bottom: 1rem;
   color: #555;
   font-size: 1.5rem;
