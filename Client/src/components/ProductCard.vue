@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Product } from '@/models/products';
-
+//eventually get rid of this file and its data file
 defineProps<{
     product: Product
 }>()

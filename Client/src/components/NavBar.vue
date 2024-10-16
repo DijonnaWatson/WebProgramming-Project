@@ -27,6 +27,8 @@ const isOpen = ref(false)
           <RouterLink to="/exerciselog" class="navbar-item">
             <i class="fas fa-running"></i>My Activity</RouterLink>
 
+           <RouterLink to="/friendsactivity" class="navbar-item">
+            <i class="fas fa-users"></i> Friends Activity</RouterLink>
 
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
@@ -44,9 +46,9 @@ const isOpen = ref(false)
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <a class="button is-primary">
+              <RouterLink to="/signup" class="button is-primary">
                 <strong>Sign up</strong>
-              </a>
+              </RouterLink>
               <a class="button is-light">
                 Log in
               </a>

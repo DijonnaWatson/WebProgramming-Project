@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { getAll, type Product } from '@/models/products';
 import ProductCard from '@/components/ProductCard.vue';
-
+//eventually get rid of this page
 const products = ref<Product[]>([]);
 products.value = getAll().data
 
