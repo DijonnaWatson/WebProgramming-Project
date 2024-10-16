@@ -24,28 +24,19 @@ const isOpen = ref(false)
         <div class="navbar-start">
           <RouterLink to="/" class="navbar-item">Home</RouterLink>
           <RouterLink to="/products" class="navbar-item">Shop</RouterLink>
-          <RouterLink to="/exerciselog" class="navbar-item">Fitness</RouterLink>
+          <RouterLink to="/exerciselog" class="navbar-item">
+            <i class="fas fa-running"></i>My Activity</RouterLink>
 
 
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
-              More
+              Admin
             </a>
 
             <div class="navbar-dropdown">
-              <RouterLink to="/about" class="navbar-item">
-                About
+              <RouterLink to="/users" class="navbar-item">
+                Users
               </RouterLink>
-              <RouterLink to="/jobs" class="navbar-item">
-                Jobs
-              </RouterLink>
-              <RouterLink to="/contact" class="navbar-item">
-                Contact
-              </RouterLink>
-              <hr class="navbar-divider">
-              <a class="navbar-item">
-                Report an issue
-              </a>
             </div>
           </div>
         </div>
