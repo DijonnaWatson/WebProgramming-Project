@@ -52,6 +52,13 @@ const isOpen = ref(false)
               <RouterLink to="/login" class="button is-light">
                 Log in
               </RouterLink>
+              <div class="navbar-item">
+                <a class="bd-tw-button button" data-social-network="Twitter" data-social-action="tweet" 
+                data-social-target="https://bulma.io" target="_blank" href="https://twitter.com/intent/tweet?text=Bulma: a modern CSS framework based on Flexbox&amp;hashtags=bulmaio&amp;url=https://bulma.io&amp;via=jgthms">
+                <span class="icon">
+                  <i class="fab fa-twitter"></i>
+                </span><span> Tweet </span></a>
+              </div>
             </div>
           </div>
         </div>
@@ -66,4 +73,5 @@ const isOpen = ref(false)
   font-weight: bold;
   border-bottom: 2px solid blue;
 }
+
 </style>
