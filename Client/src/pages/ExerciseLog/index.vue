@@ -59,10 +59,12 @@ const props = defineProps({
 
 // Sample exercise log data
 const allExercises = ref([
-  { userEmail: 'john.wick@example.com', date: '2023-10-01', activity: 'Running', duration: 30 },
-  { userEmail: 'angela.bassett@example.com', date: '2023-10-01', activity: 'Cycling', duration: 45 },
-  { userEmail: 'john.wick@example.com', date: '2023-10-02', activity: 'Swimming', duration: 60 },
-  { userEmail: 'lupita.nyongo@example.com', date: '2023-10-02', activity: 'Yoga', duration: 50 }
+  { userEmail: 'john.wick@example.com', date: '2024-10-01', activity: 'Running', duration: 30 },
+  { userEmail: 'john.wick@example.com', date: '2024-10-02', activity: 'Swimming', duration: 60 },
+  { userEmail: 'john.wick@example.com', date: '2024-10-02', activity: 'Boxing', duration: 15 },
+  { userEmail: 'angela.bassett@example.com', date: '2023-11-01', activity: 'Cycling', duration: 45 },
+  { userEmail: 'bridget.medler@example.com', date: '2043-9-02', activity: 'Walking', duration: 140 },
+  { userEmail: 'lupita.nyongo@example.com', date: '2023-1-04', activity: 'Yoga', duration: 50 }
 ]);
 
 const dailyTip = ref('Stay hydrated and drink at least 8 glasses of water a day.');
