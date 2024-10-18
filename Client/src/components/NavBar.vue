@@ -1,8 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
+import { defineProps, defineEmits } from 'vue';
 
-const isOpen = ref(false)
+const props = defineProps({
+  user: {
+    type: Object,
+    default: null
+  }
+});
+
+const emit = defineEmits(['logout']);
+
+const isOpen = ref(false);
+
+const logout = () => {
+  emit('logout');
+};
 </script>
 
 <template>
@@ -25,10 +39,12 @@ const isOpen = ref(false)
           <RouterLink to="/" class="navbar-item">Home</RouterLink>
           <RouterLink to="/products" class="navbar-item">Shop</RouterLink>
           <RouterLink to="/exerciselog" class="navbar-item">
-            <i class="fas fa-running"></i>My Activity</RouterLink>
+            <i class="fas fa-running"></i> My Activity
+          </RouterLink>
 
-           <RouterLink to="/friendsactivity" class="navbar-item">
-            <i class="fas fa-users"></i> Friends Activity</RouterLink>
+          <RouterLink to="/friendsactivity" class="navbar-item">
+            <i class="fas fa-users"></i> Friends Activity
+          </RouterLink>
 
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
@@ -46,20 +62,28 @@ const isOpen = ref(false)
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <RouterLink to="/signup" class="button is-primary">
+              <RouterLink v-if="!user" to="/signup" class="button is-primary">
                 <strong>Sign up</strong>
               </RouterLink>
-              <RouterLink to="/login" class="button is-light">
+              <RouterLink v-if="!user" to="/login" class="button is-light">
                 Log in
               </RouterLink>
-              <div class="navbar-item">
-                <a class="bd-tw-button button" data-social-network="Twitter" data-social-action="tweet" 
-                data-social-target="https://bulma.io" target="_blank" href="https://twitter.com/intent/tweet?text=Bulma: a modern CSS framework based on Flexbox&amp;hashtags=bulmaio&amp;url=https://bulma.io&amp;via=jgthms">
-                <span class="icon">
-                  <i class="fab fa-twitter"></i>
-                </span><span> Tweet </span></a>
+              <div v-if="user" class="user-info">
+                <img :src="user.profilePic" alt="Profile Picture" class="profile-pic">
+                <span>{{ user.firstName }} {{ user.lastName }}</span>
+                <button class="button is-light" @click="logout">Log out</button>
               </div>
             </div>
+          </div>
+          <div class="navbar-item">
+            <a class="bd-tw-button button" data-social-network="Twitter" data-social-action="tweet" 
+               data-social-target="https://bulma.io" target="_blank" 
+               href="https://twitter.com/intent/tweet?text=Bulma: a modern CSS framework based on Flexbox&amp;hashtags=bulmaio&amp;url=https://bulma.io&amp;via=jgthms">
+              <span class="icon">
+                <i class="fab fa-twitter"></i>
+              </span>
+              <span> Tweet </span>
+            </a>
           </div>
         </div>
       </div>
@@ -69,9 +93,47 @@ const isOpen = ref(false)
 
 <style scoped>
 .router-link-active {
-
   font-weight: bold;
   border-bottom: 2px solid blue;
 }
 
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-pic {
+  width: 4rem;
+  height: 5rem;
+  /* border-radius: 50%; */
+  object-fit: cover; /* Ensure the image covers the entire area */
+}
+
+.bd-tw-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #1DA1F2;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.bd-tw-button:hover {
+  background-color: #1A91DA;
+  transform: translateY(-0.1rem);
+}
+
+.bd-tw-button:active {
+  background-color: #1A91DA;
+  transform: translateY(0);
+}
+
+.tweet-text {
+  font-weight: bold;
+}
 </style>
