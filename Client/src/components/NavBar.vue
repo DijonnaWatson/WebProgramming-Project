@@ -65,7 +65,7 @@ const logout = () => {
               <RouterLink v-if="!user" to="/signup" class="button is-primary">
                 <strong>Sign up</strong>
               </RouterLink>
-              <RouterLink v-if="!user" to="/login" class="button is-light">
+               <RouterLink v-if="!user" to="/login" class="button is-light">
                 Log in
               </RouterLink>
               <div v-if="user" class="user-info">

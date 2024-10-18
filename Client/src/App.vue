@@ -20,7 +20,7 @@ const handleLogout = () => {
 <template>
   <NavBar :user="user" @logout="handleLogout" />
   <div class="container">
-    <RouterView @login="handleLogin" />
+    <RouterView @login="handleLogin" :user="user" />
   </div>
 </template>
 
