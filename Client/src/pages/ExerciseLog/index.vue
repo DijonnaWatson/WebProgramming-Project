@@ -7,7 +7,7 @@
       <div class="exercise-log">
         <h2>Exercise Log</h2>
         <ul>
-          <li v-for="(exercise, index) in exercises" :key="index">
+          <li v-for="(exercise, index) in filteredExercises" :key="index">
             <span class="date">{{ formatDate(exercise.date) }}</span>
             <span class="activity">{{ exercise.activity }}</span>
             <span class="duration">{{ exercise.duration }} minutes</span>
@@ -47,6 +47,23 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { defineProps } from 'vue';
+
+// Define props to receive the logged-in user's data
+const props = defineProps({
+  user: {
+    type: Object,
+    default: null
+  }
+});
+
+// Sample exercise log data
+const allExercises = ref([
+  { userEmail: 'john.wick@example.com', date: '2023-10-01', activity: 'Running', duration: 30 },
+  { userEmail: 'angela.bassett@example.com', date: '2023-10-01', activity: 'Cycling', duration: 45 },
+  { userEmail: 'john.wick@example.com', date: '2023-10-02', activity: 'Swimming', duration: 60 },
+  { userEmail: 'lupita.nyongo@example.com', date: '2023-10-02', activity: 'Yoga', duration: 50 }
+]);
 
 const dailyTip = ref('Stay hydrated and drink at least 8 glasses of water a day.');
 const exerciseTips = ref([
@@ -57,25 +74,23 @@ const exerciseTips = ref([
   'Listen to your body and rest when needed.'
 ]);
 
-const exercises = ref([
-  { date: '2021-10-01', activity: 'Running', duration: 30 }
-]);
+// Filter exercises for the logged-in user
+const filteredExercises = computed(() => {
+  return allExercises.value.filter(exercise => exercise.userEmail === props.user?.email);
+});
 
 const newExercise = ref({ date: '', activity: '', duration: 0 });
 const goal = ref<number | null>(null);
 
 const addExercise = () => {
   if (newExercise.value.date && newExercise.value.activity && newExercise.value.duration) {
-    if (exercises.value.length === 1 && exercises.value[0].date === '2021-10-01') {
-      exercises.value = [];
-    }
-    exercises.value.push({ ...newExercise.value });
+    allExercises.value.push({ ...newExercise.value, userEmail: props.user.email });
     newExercise.value = { date: '', activity: '', duration: 0 };
   }
 };
 
 const totalDuration = computed(() => {
-  return exercises.value.reduce((total, exercise) => total + exercise.duration, 0);
+  return filteredExercises.value.reduce((total, exercise) => total + exercise.duration, 0);
 });
 
 const progressBarWidth = computed(() => {
@@ -250,6 +265,7 @@ const formatDate = (dateString: string) => {
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  height:fit-content;
 }
 
 .tips-box h2 {

@@ -37,7 +37,6 @@ const logout = () => {
       <div class="navbar-menu" :class="{ 'is-active': isOpen }">
         <div class="navbar-start">
           <RouterLink to="/" class="navbar-item">Home</RouterLink>
-          <RouterLink to="/products" class="navbar-item">Shop</RouterLink>
           <RouterLink to="/exerciselog" class="navbar-item">
             <i class="fas fa-running"></i> My Activity
           </RouterLink>
