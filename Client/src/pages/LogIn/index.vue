@@ -55,7 +55,7 @@ watch(() => props.user, (newUser) => {
       <h2>Login to My Fitness App</h2>
       <form @submit.prevent="signIn">
         <div class="form-group">
-          <label for="signInEmail">User:</label>
+          <label for="signInEmail">Email:</label>
           <select v-model="signInEmail" id="signInEmail" required>
             <option value="" disabled>Select a user</option>
             <option v-for="user in users" :key="user.email" :value="user.email">{{ user.email }}</option>
