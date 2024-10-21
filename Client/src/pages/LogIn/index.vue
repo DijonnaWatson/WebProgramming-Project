@@ -24,13 +24,14 @@ const emit = defineEmits(['login']);
 const signIn = () => {
   // Find the selected user
   selectedUser.value = users.value.find(user => user.email === signInEmail.value);
+   
   // Emit the selected user data to the parent component
   emit('login', selectedUser.value);
   // Perform form validation and submission logic here
   console.log('Signed In:', { email: signInEmail.value, password: signInPassword.value });
   // Reset form fields
   signInEmail.value = '';
-  signInPassword.value = 'fakepassword123'; // Reset to fake password
+  signInPassword.value = ''; // Reset to fake password
 };
 
 // Watch for user prop changes to reset the password field on logout
