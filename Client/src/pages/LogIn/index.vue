@@ -8,14 +8,16 @@ const signInEmail = ref('');
 const signInPassword = ref('');
 
 // Load user data from the model
-const users = ref([]);
+import type { User } from '@/models/users';
+
+const users = ref<User[]>([]);
 onMounted(() => {
   const { data } = getAllUsers();
   users.value = data;
 });
 
 // Selected user data
-const selectedUser = ref(null);
+const selectedUser = ref<User | null>(null);
 
 // Emit event to parent component
 const emit = defineEmits(['login']);
@@ -23,14 +25,14 @@ const emit = defineEmits(['login']);
 // Handle form submission for sign-in
 const signIn = () => {
   // Find the selected user
-  selectedUser.value = users.value.find(user => user.email === signInEmail.value);
+  selectedUser.value = users.value.find(user => user.email === signInEmail.value) || null;
    
   // Emit the selected user data to the parent component
   emit('login', selectedUser.value);
   // Perform form validation and submission logic here
   console.log('Signed In:', { email: signInEmail.value, password: signInPassword.value });
-  // Reset form fields
-  signInEmail.value = '';
+  
+  signInEmail.value = '';//reset for email
   signInPassword.value = ''; // Reset to fake password
 };
 
