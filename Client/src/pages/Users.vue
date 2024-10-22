@@ -2,34 +2,35 @@
 import { ref, onMounted } from 'vue';
 import { getAllUsers } from '@/models/users';
 import { defineProps } from 'vue';
+import UsersCard from '@/components/UsersCard.vue';
+import type { User } from '@/models/users';
 
 const props = defineProps({
   user: {
-    type: Object,
+    type: Object as () => User,
     default: null
   }
 });
-
-const users = ref([]);
+const users = ref<User[]>([]);
 
 onMounted(() => {
   const { data } = getAllUsers();
   users.value = data;
 });
 
-const editUser = (user) => {
-  // TODO: add user functionality
+const editUser = (user: User) => {
+  console.log('Editing user:', user);//temporary code for button to get rid of warning
+  // Implement edit user functionality
 };
 
-const deleteUser = (user) => {
-  // TODO: add delete user functionality
+const deleteUser = (user: User) => {
+  console.log('Deleting user:', user);//temporary code for button to get rid of warning
+  // Implement delete user functionality
 };
 </script>
-
 <template>
-   <div>
+  <div>
     <h1>Admin - User List</h1>
-    <!-- If-Else statement for who does and doesn't have admin access-->
     <table v-if="props.user?.adminAccess">
       <thead>
         <tr>
@@ -42,21 +43,13 @@ const deleteUser = (user) => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users" :key="user.email">
-          <td><img :src="user.profilePic" alt="Profile Picture" class="profile-pic"></td>
-          <td>{{ user.firstName }}</td>
-          <td>{{ user.lastName }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.adminAccess ? 'Yes' : 'No' }}</td>
-          <td>
-            <button @click="editUser(user)" class="action-button">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button @click="deleteUser(user)" class="action-button">
-              <i class="fas fa-trash"></i>
-            </button>
-          </td>
-        </tr>
+        <UsersCard
+          v-for="user in users"
+          :key="user.email"
+          :user="user"
+          @edit="editUser"
+          @delete="deleteUser"
+        />
       </tbody>
     </table>
     <p v-else>You do not have access to view this page.</p>
