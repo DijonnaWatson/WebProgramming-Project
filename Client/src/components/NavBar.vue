@@ -45,6 +45,10 @@ const logout = () => {
             <i class="fas fa-users"></i> Friends Activity
           </RouterLink>
 
+           <RouterLink to="/peoplesearch" class="navbar-item">
+            <i class="fas fa-search"></i> People Search
+          </RouterLink>
+
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               Admin
