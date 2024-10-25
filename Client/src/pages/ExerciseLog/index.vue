@@ -1,8 +1,77 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { defineProps } from 'vue';
+import { getAllUsers, type User, type ActivityLog } from '@/models/users';
+
+const props = defineProps({
+  user: {
+    type: Object as () => User | null,
+    default: null
+  }
+});
+
+const users = ref<User[]>([]);
+const activityLogs = ref<ActivityLog[]>([]);
+
+onMounted(() => {
+  const { data } = getAllUsers();
+  users.value = data;
+  const currentUser = users.value.find(user => user.email === props.user?.email);
+  if (currentUser) {
+    activityLogs.value = currentUser.activityLogs;
+  }
+});
+
+const dailyTip = ref('Stay hydrated and drink at least 8 glasses of water a day.');
+const exerciseTips = ref([
+  'Warm up before exercising to prevent injuries.',
+  'Maintain proper form to maximize benefits and avoid injuries.',
+  'Cool down after exercising to help your muscles recover.',
+  'Stay consistent with your workouts for the best results.',
+  'Listen to your body and rest when needed.'
+]);
+
+// Filter exercises for the logged-in user
+const filteredExercises = computed(() => {
+  return activityLogs.value;
+});
+
+const newExercise = ref({ date: '', activity: '', duration: 0 });
+const goal = ref<number | null>(null);
+
+const addExercise = () => {
+  if (newExercise.value.date && newExercise.value.activity && newExercise.value.duration) {
+    activityLogs.value.push({ ...newExercise.value });
+    newExercise.value = { date: '', activity: '', duration: 0 };
+  }
+};
+
+const deleteExercise = (index: number) => {
+  activityLogs.value.splice(index, 1);
+};
+
+const totalDuration = computed(() => {
+  return filteredExercises.value.reduce((total, exercise) => total + exercise.duration, 0);
+});
+
+const progressBarWidth = computed(() => {
+  if (!goal.value) return 0;
+  return Math.min((totalDuration.value / goal.value) * 100, 100);
+});
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}-${day}-${year}`;
+};
+</script>
+
 <template>
   <div class="home">
     <h1>Welcome to the Fitness App Fitness Log Page!</h1>
     <p class="daily-tip">{{ dailyTip }}</p>
-    
     <div class="content">
       <div class="exercise-log">
         <h2>Exercise Log</h2>
@@ -11,6 +80,7 @@
             <span class="date">{{ formatDate(exercise.date) }}</span>
             <span class="activity">{{ exercise.activity }}</span>
             <span class="duration">{{ exercise.duration }} minutes</span>
+            <button @click="deleteExercise(index)" class="delete-button">Delete</button>
           </li>
         </ul>
         <div class="goal-input">
@@ -44,70 +114,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, computed } from 'vue';
-import { defineProps } from 'vue';
-
-// Define props to receive the logged-in user's data
-const props = defineProps({
-  user: {
-    type: Object,
-    default: null
-  }
-});
-
-// Sample exercise log data
-const allExercises = ref([
-  { userEmail: 'john.wick@example.com', date: '2024-10-01', activity: 'Running', duration: 30 },
-  { userEmail: 'john.wick@example.com', date: '2024-10-02', activity: 'Swimming', duration: 60 },
-  { userEmail: 'john.wick@example.com', date: '2024-10-02', activity: 'Boxing', duration: 15 },
-  { userEmail: 'angela.bassett@example.com', date: '2023-11-01', activity: 'Cycling', duration: 45 },
-  { userEmail: 'bridget.medler@example.com', date: '2043-9-02', activity: 'Walking', duration: 140 },
-  { userEmail: 'lupita.nyongo@example.com', date: '2023-1-04', activity: 'Yoga', duration: 50 }
-]);
-
-const dailyTip = ref('Stay hydrated and drink at least 8 glasses of water a day.');
-const exerciseTips = ref([
-  'Warm up before exercising to prevent injuries.',
-  'Maintain proper form to maximize benefits and avoid injuries.',
-  'Cool down after exercising to help your muscles recover.',
-  'Stay consistent with your workouts for the best results.',
-  'Listen to your body and rest when needed.'
-]);
-
-// Filter exercises for the logged-in user
-const filteredExercises = computed(() => {
-  return allExercises.value.filter(exercise => exercise.userEmail === props.user?.email);
-});
-
-const newExercise = ref({ date: '', activity: '', duration: 0 });
-const goal = ref<number | null>(null);
-
-const addExercise = () => {
-  if (newExercise.value.date && newExercise.value.activity && newExercise.value.duration) {
-    allExercises.value.push({ ...newExercise.value, userEmail: props.user.email });
-    newExercise.value = { date: '', activity: '', duration: 0 };
-  }
-};
-
-const totalDuration = computed(() => {
-  return filteredExercises.value.reduce((total, exercise) => total + exercise.duration, 0);
-});
-
-const progressBarWidth = computed(() => {
-  if (!goal.value) return 0;
-  return Math.min((totalDuration.value / goal.value) * 100, 100);
-});
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${month}-${day}-${year}`;
-};
-</script>
 
 <style scoped>
 .home {
@@ -252,7 +258,7 @@ const formatDate = (dateString: string) => {
   background-color: #007BFF;
   color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s;
+ 
 }
 
 .exercise-log form button:hover {
@@ -289,5 +295,15 @@ const formatDate = (dateString: string) => {
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
   font-size: 1.2rem;
   color: #555;
+}
+
+.delete-button {
+  background-color: #f34758;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+  
 }
 </style>
