@@ -230,6 +230,7 @@ const formatDate = (dateString: string) => {
 .goal-pending {
   color: #ff6347;
   font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .exercise-log form {

@@ -28,9 +28,9 @@ const formatDate = (dateString: string) => {
 </script>
 <template>
   <div class="activity-log">
-    <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+    <h2>{{ props.user.firstName }} {{ props.user.lastName }}</h2>
     <ul>
-      <li v-for="(log, index) in activityLogs" :key="index">
+      <li v-for="(log, index) in props.activityLogs" :key="index">
         <span class="date">{{ formatDate(log.date) }}</span>
         <span class="activity">{{ log.activity }}</span>
         <span class="duration">{{ log.duration }} minutes</span>
