@@ -10,9 +10,7 @@
         { "date": "2024-10-26", "activity": "Running", "duration": 30, "distance": 10, "calories": 300 },
         { "date": "2024-10-24", "activity": "Swimming", "duration": 60, "distance": 2, "calories": 100 },
         { "date": "2024-10-24", "activity": "Boxing", "duration": 15 , "distance": 0, "calories": 120}
-      ],
-      "totalDistance": 12,
-      "totalCalories": 420
+      ]
     },
     {
       "email": "angela.bassett@example.com",
@@ -20,10 +18,10 @@
       "lastName": "Bassett",
       "profilePic": "https://s.yimg.com/ny/api/res/1.2/VYQhbuj_HFUQY_Hci6gk9Q--/YXBwaWQ9aGlnaGxhbmRlcjt3PTY0MDtoPTQyNw--/https://media.zenfs.com/en/deadline.com/a0a4e472be0021470140323d2da45807",
       "adminAccess": true,
-      "activityLogs": [{ "date": "2024-10-01", "activity": "Cycling", "duration": 45, "distance": 5, "calories": 300 }
-    ],
-      "totalDistance": 5,
-      "totalCalories": 300
+      "activityLogs": [
+        { "date": "2024-10-26", "activity": "Cycling", "duration": 45, "distance": 5, "calories": 300 },
+        { "date": "2024-10-27", "activity": "Walking", "duration": 150, "distance": 4, "calories": 390 }
+    ]
     },
     {
       "email": "bridget.medler@example.com",
@@ -34,9 +32,7 @@
       "activityLogs": [
         { "date": "2024-10-21", "activity": "Walking", "duration": 140, "distance": 3, "calories": 350 },
         { "date": "2024-10-27", "activity": "Walking", "duration": 150, "distance": 4, "calories": 390 }
-      ],
-      "totalDistance": 7,
-      "totalCalories": 740
+      ]
     },
     {
       "email": "lupita.nyongo@example.com",
@@ -47,9 +43,7 @@
       "activityLogs": [
         { "date": "2024-10-21", "activity": "Swimming", "duration": 30, "distance": 15, "calories": 200 },
          { "date": "2024-10-26", "activity": "Yoga", "duration": 60 , "distance": 0, "calories": 150}
-      ],
-      "totalDistance": 15,
-      "totalCalories": 350
+      ]
     }
   ],
   "total": 4

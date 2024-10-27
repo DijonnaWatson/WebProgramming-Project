@@ -20,16 +20,18 @@ onMounted(() => {
   if (currentUser) {
     activityLogs.value = currentUser.activityLogs;
   }
+  console.log("Loaded activity logs:", activityLogs.value);
 });
 
 const today = new Date();
-const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-const startOfWeek = new Date(today);
-startOfWeek.setDate(today.getDate() - today.getDay());
-startOfWeek.setHours(0, 0, 0, 0);
+const startOfDay = new Date(today.toISOString().split("T")[0] + "T00:00:00Z");
+
+// Calculate the start of the week in UTC for consistency across timezones
+const startOfWeek = new Date(today.toISOString().split("T")[0] + "T00:00:00Z");
+startOfWeek.setUTCDate(today.getUTCDate() - today.getUTCDay());
 
 const filterLogs = (logs: ActivityLog[], startDate: Date) => {
-  return logs.filter(log => new Date(log.date) >= startDate);
+  return logs.filter(log => new Date(Date.parse(log.date)) >= startDate);
 };
 
 const calculateMetrics = (logs: ActivityLog[]) => {
@@ -59,12 +61,12 @@ const metricsAllTime = computed(() => calculateMetrics(activityLogs.value));
       <h2>Today</h2>
       <div class="metrics-box">
         <div class="metrics-row">
-          <span>Total Distance: {{ metricsToday.totalDistance }} mi</span>
+          <span>Total Distance: {{ metricsToday.totalDistance.toFixed(2) }} mi</span>
           <span>Total Duration: {{ metricsToday.totalDuration }} minutes</span>
         </div>
         <div class="metrics-row">
           <span>Average Pace: {{ metricsToday.avgPace.toFixed(1) }} mph</span>
-          <span>Total Calories: {{ metricsToday.totalCalories }} </span>
+          <span>Total Calories: {{ metricsToday.totalCalories }} kcal</span>
         </div>
       </div>
     </div>
@@ -72,12 +74,12 @@ const metricsAllTime = computed(() => calculateMetrics(activityLogs.value));
       <h2>This Week</h2>
       <div class="metrics-box">
         <div class="metrics-row">
-          <span>Total Distance: {{ metricsThisWeek.totalDistance }} mi</span>
+          <span>Total Distance: {{ metricsThisWeek.totalDistance.toFixed(2) }} mi</span>
           <span>Total Duration: {{ metricsThisWeek.totalDuration }} minutes</span>
         </div>
         <div class="metrics-row">
           <span>Average Pace: {{ metricsThisWeek.avgPace.toFixed(1) }} mph</span>
-          <span>Total Calories: {{ metricsThisWeek.totalCalories }} </span>
+          <span>Total Calories: {{ metricsThisWeek.totalCalories }} kcal</span>
         </div>
       </div>
     </div>
@@ -85,12 +87,12 @@ const metricsAllTime = computed(() => calculateMetrics(activityLogs.value));
       <h2>All Time</h2>
       <div class="metrics-box">
         <div class="metrics-row">
-          <span>Total Distance: {{ metricsAllTime.totalDistance }} mi</span>
+          <span>Total Distance: {{ metricsAllTime.totalDistance.toFixed(2) }} mi</span>
           <span>Total Duration: {{ metricsAllTime.totalDuration }} minutes</span>
         </div>
         <div class="metrics-row">
           <span>Average Pace: {{ metricsAllTime.avgPace.toFixed(1) }} mph</span>
-          <span>Total Calories: {{ metricsAllTime.totalCalories }} </span>
+          <span>Total Calories: {{ metricsAllTime.totalCalories }} kcal</span>
         </div>
       </div>
     </div>
@@ -140,18 +142,5 @@ const metricsAllTime = computed(() => calculateMetrics(activityLogs.value));
   flex: 1;
   text-align: center;
   font-weight: bold;
-}
-
-.metrics-box .date {
-  font-weight: bold;
-  color: #555;
-}
-
-.metrics-box .activity {
-  color: #007BFF;
-}
-
-.metrics-box .duration {
-  color: #28a745;
 }
 </style>

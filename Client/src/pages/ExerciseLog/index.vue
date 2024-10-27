@@ -62,9 +62,10 @@ const progressBarWidth = computed(() => {
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()+1).padStart(2, '0');
-  const year = date.getFullYear();
+  const utcDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000); // Convert to UTC
+  const month = String(utcDate.getMonth() + 1).padStart(2, '0');
+  const day = String(utcDate.getDate()).padStart(2, '0');
+  const year = utcDate.getFullYear();
   return `${month}-${day}-${year}`;
 };
 </script>
