@@ -16,6 +16,8 @@ export interface ActivityLog {
   date: string
   activity: string
   duration: number
+  calories: number
+  distance: number
 }
 
 export interface User {

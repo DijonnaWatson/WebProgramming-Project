@@ -32,14 +32,15 @@ const filterLogs = (logs: ActivityLog[], startDate: Date) => {
 };
 
 const calculateMetrics = (logs: ActivityLog[]) => {
-  const totalDistance = logs.reduce((sum, log) => sum + (log.distance || 0), 0);
-  const totalDuration = logs.reduce((sum, log) => sum + log.duration, 0);
-  const avgPace = totalDuration ? (totalDistance / totalDuration) : 0;
+ const totalDistance = logs.reduce((sum, log) => sum + (log.distance || 0), 0);
+  const totalDurationMinutes = logs.reduce((sum, log) => sum + log.duration, 0);
+  const totalDurationHours = totalDurationMinutes / 60;
+  const avgPace = totalDurationHours ? (totalDistance / totalDurationHours) : 0;
   const totalCalories = logs.reduce((sum, log) => sum + (log.calories || 0), 0);
 
   return {
     totalDistance,
-    totalDuration,
+    totalDuration: totalDurationMinutes,
     avgPace,
     totalCalories
   };
@@ -48,6 +49,8 @@ const calculateMetrics = (logs: ActivityLog[]) => {
 const metricsToday = computed(() => calculateMetrics(filterLogs(activityLogs.value, startOfDay)));
 const metricsThisWeek = computed(() => calculateMetrics(filterLogs(activityLogs.value, startOfWeek)));
 const metricsAllTime = computed(() => calculateMetrics(activityLogs.value));
+
+
 </script>
 
 <template>
@@ -57,11 +60,11 @@ const metricsAllTime = computed(() => calculateMetrics(activityLogs.value));
       <h2>Today</h2>
       <div class="metrics-box">
         <div class="metrics-row">
-          <span>Total Distance: {{ metricsToday.totalDistance }} ft</span>
+          <span>Total Distance: {{ metricsToday.totalDistance }} mi</span>
           <span>Total Duration: {{ metricsToday.totalDuration }} minutes</span>
         </div>
         <div class="metrics-row">
-          <span>Average Pace: {{ metricsToday.avgPace.toFixed(2) }} mph</span>
+          <span>Average Pace: {{ metricsToday.avgPace.toFixed(1) }} mph</span>
           <span>Total Calories: {{ metricsToday.totalCalories }} </span>
         </div>
       </div>
@@ -70,11 +73,11 @@ const metricsAllTime = computed(() => calculateMetrics(activityLogs.value));
       <h2>This Week</h2>
       <div class="metrics-box">
         <div class="metrics-row">
-          <span>Total Distance: {{ metricsThisWeek.totalDistance }} ft</span>
+          <span>Total Distance: {{ metricsThisWeek.totalDistance }} mi</span>
           <span>Total Duration: {{ metricsThisWeek.totalDuration }} minutes</span>
         </div>
         <div class="metrics-row">
-          <span>Average Pace: {{ metricsThisWeek.avgPace.toFixed(2) }} mph</span>
+          <span>Average Pace: {{ metricsThisWeek.avgPace.toFixed(1) }} mph</span>
           <span>Total Calories: {{ metricsThisWeek.totalCalories }} </span>
         </div>
       </div>
@@ -83,11 +86,11 @@ const metricsAllTime = computed(() => calculateMetrics(activityLogs.value));
       <h2>All Time</h2>
       <div class="metrics-box">
         <div class="metrics-row">
-          <span>Total Distance: {{ metricsAllTime.totalDistance }} ft</span>
+          <span>Total Distance: {{ metricsAllTime.totalDistance }} mi</span>
           <span>Total Duration: {{ metricsAllTime.totalDuration }} minutes</span>
         </div>
         <div class="metrics-row">
-          <span>Average Pace: {{ metricsAllTime.avgPace.toFixed(2) }} mph</span>
+          <span>Average Pace: {{ metricsAllTime.avgPace.toFixed(1) }} mph</span>
           <span>Total Calories: {{ metricsAllTime.totalCalories }} </span>
         </div>
       </div>

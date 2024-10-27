@@ -36,13 +36,14 @@ const filteredExercises = computed(() => {
   return activityLogs.value;
 });
 
-const newExercise = ref({ date: '', activity: '', duration: 0 });
+const newExercise = ref({ date: '', activity: '', duration: 0, calories: 0, distance: 0 });
 const goal = ref<number | null>(null);
 
+//Don't know if user should add calories, and distande yet
 const addExercise = () => {
   if (newExercise.value.date && newExercise.value.activity && newExercise.value.duration) {
-    activityLogs.value.push({ ...newExercise.value });
-    newExercise.value = { date: '', activity: '', duration: 0 };
+    activityLogs.value.push({ ...newExercise.value, calories: newExercise.value.calories, distance: newExercise.value.distance });
+    newExercise.value = { date: '', activity: '', duration: 0, calories: 0, distance: 0 };
   }
 };
 
