@@ -24,7 +24,8 @@ onMounted(() => {
 
 const today = new Date();
 const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+const startOfWeek = new Date(today);
+startOfWeek.setDate(today.getDate() - today.getDay());
 startOfWeek.setHours(0, 0, 0, 0);
 
 const filterLogs = (logs: ActivityLog[], startDate: Date) => {
@@ -32,7 +33,7 @@ const filterLogs = (logs: ActivityLog[], startDate: Date) => {
 };
 
 const calculateMetrics = (logs: ActivityLog[]) => {
- const totalDistance = logs.reduce((sum, log) => sum + (log.distance || 0), 0);
+  const totalDistance = logs.reduce((sum, log) => sum + (log.distance || 0), 0);
   const totalDurationMinutes = logs.reduce((sum, log) => sum + log.duration, 0);
   const totalDurationHours = totalDurationMinutes / 60;
   const avgPace = totalDurationHours ? (totalDistance / totalDurationHours) : 0;
@@ -49,8 +50,6 @@ const calculateMetrics = (logs: ActivityLog[]) => {
 const metricsToday = computed(() => calculateMetrics(filterLogs(activityLogs.value, startOfDay)));
 const metricsThisWeek = computed(() => calculateMetrics(filterLogs(activityLogs.value, startOfWeek)));
 const metricsAllTime = computed(() => calculateMetrics(activityLogs.value));
-
-
 </script>
 
 <template>
