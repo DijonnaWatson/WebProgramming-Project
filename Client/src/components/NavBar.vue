@@ -41,6 +41,9 @@ const logout = () => {
             <i class="fas fa-running"></i> My Activity
           </RouterLink>
 
+          <RouterLink to="/statistics" class="navbar-item">
+            <i class="fas fa-chart-line"></i> Statistics</RouterLink>
+
           <RouterLink to="/friendsactivity" class="navbar-item">
             <i class="fas fa-users"></i> Friends Activity
           </RouterLink>

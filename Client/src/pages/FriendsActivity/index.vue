@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getAllUsers } from '@/models/users';
-import type { User, ActivityLog } from '@/models/users';
+import type { User } from '@/models/users';
 
 const users = ref<User[]>([]);
 
