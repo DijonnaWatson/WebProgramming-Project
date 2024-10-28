@@ -12,9 +12,9 @@ const emit = defineEmits(['logout']);
 
 const isOpen = ref(false);
 
-// const logout = () => {
-//   emit('logout');
-// };
+const handleLogout = () => {
+  emit('logout');
+};
 </script>
 
 <template>
@@ -69,13 +69,13 @@ const isOpen = ref(false);
               <RouterLink v-if="!user" to="/signup" class="button is-primary">
                 <strong>Sign up</strong>
               </RouterLink>
-               <RouterLink v-if="!user" to="/login" class="button is-light">
+              <RouterLink v-if="!user" to="/login" class="button is-light">
                 Log in
               </RouterLink>
               <div v-if="user" class="user-info">
                 <img :src="user.profilePic" alt="Profile Picture" class="profile-pic">
                 <span>{{ user.firstName }} {{ user.lastName }}</span>
-                <button class="button is-light" @click="logout">Log out</button>
+                <button class="button is-light" @click="handleLogout">Log out</button>
               </div>
             </div>
           </div>
