@@ -11,9 +11,9 @@ const emit = defineEmits(['logout']);
 
 const isOpen = ref(false);
 
-const handleLogout = () => {
+function handleLogout() {
   emit('logout');
-};
+}
 </script>
 
 <template>
