@@ -3,20 +3,18 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { defineProps, defineEmits } from 'vue';
 
-const props = defineProps({
-  user: {
-    type: Object,
-    default: null
-  }
-});
+const props = defineProps<{
+  user: Record<string, any> | null | undefined;
+  logout: () => void;
+}>();
 
 const emit = defineEmits(['logout']);
 
 const isOpen = ref(false);
 
-const logout = () => {
-  emit('logout');
-};
+// const logout = () => {
+//   emit('logout');
+// };
 </script>
 
 <template>

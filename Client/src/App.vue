@@ -4,7 +4,7 @@ import { RouterView } from 'vue-router';
 import NavBar from '@/components/NavBar.vue';
 
 // Define reactive variables for user data
-const user = ref(null);
+const user = ref<Record<string, any> | undefined | null>({});
 
 // Function to handle user login
 const handleLogin = (userData: any) => {
@@ -18,7 +18,7 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <NavBar :user="user" @logout="handleLogout" />
+  <NavBar :user="user" :logout="handleLogout" />
   <div class="container">
     <RouterView @login="handleLogin" :user="user" />
   </div>
