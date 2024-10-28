@@ -26,6 +26,8 @@ const handleLogout = () => {
 
 <style scoped>
 .container {
-  padding: 20px;
+  /* padding: 20px;
+  margin-top:0; */
+  min-height: 100vh;
 }
 </style>

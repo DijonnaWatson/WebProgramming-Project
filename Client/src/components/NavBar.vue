@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import { defineProps, defineEmits } from 'vue';
+import {  defineEmits } from 'vue';
 
 const props = defineProps<{
   user: Record<string, any> | null | undefined;
@@ -65,15 +65,15 @@ const handleLogout = () => {
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <RouterLink v-if="!user" to="/signup" class="button is-primary">
+              <RouterLink v-if="!props.user" to="/signup" class="button is-primary">
                 <strong>Sign up</strong>
               </RouterLink>
               <RouterLink v-if="!user" to="/login" class="button is-light">
                 Log in
               </RouterLink>
-              <div v-if="user" class="user-info">
-                <img :src="user.profilePic" alt="Profile Picture" class="profile-pic">
-                <span>{{ user.firstName }} {{ user.lastName }}</span>
+              <div v-if="props.user" class="user-info">
+                <img :src="props.user.profilePic" alt="Profile Picture" class="profile-pic">
+                <span>{{ props.user.firstName }} {{ props.user.lastName }}</span>
                 <button class="button is-light" @click="handleLogout">Log out</button>
               </div>
             </div>
@@ -139,4 +139,5 @@ const handleLogout = () => {
 .tweet-text {
   font-weight: bold;
 }
+
 </style>
