@@ -7,7 +7,7 @@ import NavBar from '@/components/NavBar.vue';
 const user = ref(null);
 
 // Function to handle user login
-const handleLogin = (userData) => {
+const handleLogin = (userData: any) => {
   user.value = userData;
 };
 
