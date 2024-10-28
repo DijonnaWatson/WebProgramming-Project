@@ -5,7 +5,6 @@ import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps<{
   user: Record<string, any> | null | undefined;
-  logout: () => void;
 }>();
 
 const emit = defineEmits(['logout']);

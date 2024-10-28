@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import NavBar from '@/components/NavBar.vue';
-
 import { RouterView } from 'vue-router';
 
 // Define reactive variables for user data
