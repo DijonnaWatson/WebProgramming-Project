@@ -1,72 +1,127 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAllUsers, type User } from '@/models/users';
-import { defineProps } from 'vue';
-import UsersCard from '@/components/UsersCard.vue';
+import { getAllUsers, addUser, editUser, deleteUser, type User } from '@/models/users';
 
+const props = defineProps<{
+  user: User | null;
+}>();
 
-const props = defineProps({
-  user: {
-    type: Object as () => User,
-    default: null
-  }
-});
 const users = ref<User[]>([]);
+const showAddForm = ref(false);
+const showEditForm = ref(false);
+const newUser = ref<Partial<User>>({});
+const editUserForm = ref<Partial<User>>({});
 
 onMounted(() => {
   const { data } = getAllUsers();
   users.value = data;
 });
 
-const addUser = (user: User) => {
-  console.log('Add user button clicked', user);//temporary code for button to get rid of warning, does display that editing user works in the inspect console
-  // Implement edit user functionality
+const handleAddUser = () => {
+  if (newUser.value.firstName && newUser.value.lastName && newUser.value.email) {
+    addUser(newUser.value as User);
+    users.value = getAllUsers().data;
+    showAddForm.value = false;
+    newUser.value = {};
+  }
 };
 
-const editUser = () => {
-  console.log('Editing user:');//temporary code for button to get rid of warning, does display that editing user works in the inspect console
-  // Implement edit user functionality
+const handleEditUser = () => {
+  if (editUserForm.value.email) {
+    editUser(editUserForm.value.email, editUserForm.value);
+    users.value = getAllUsers().data;
+    showEditForm.value = false;
+    editUserForm.value = {};
+  }
 };
 
-const deleteUser = (user: User) => {
-  console.log('Deleting user:', user);//temporary code for button to get rid of warning, does display that deleting user works in the inspect console
-  // Implement delete user functionality
+const handleDeleteUser = (email: string) => {
+  deleteUser(email);
+  users.value = getAllUsers().data;
+};
+
+const showAddUserForm = () => {
+  showAddForm.value = true;
+  showEditForm.value = false;
+};
+
+const showEditUserForm = (user: User) => {
+  showEditForm.value = true;
+  showAddForm.value = false;
+  editUserForm.value = { ...user };
 };
 </script>
+
+
 <template>
   <div>
-    <h1>Admin - User List</h1>
-    <div v-if="props.user?.adminAccess"> 
-      <button @click="addUser(user)" class="add-user-button"> 
-        <i class="fas fa-plus"></i> Add User
-      </button>
-      <table>
-        <thead>
-          <tr>
-            <th>Profile Picture</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Admin Access</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <UsersCard
-            v-for="user in users"
-            :key="user.email"
-            :user="user"
-            @edit="editUser"
-            @delete="deleteUser"
-          />
-        </tbody>
-      </table>
+    <h1>Users</h1>
+    <button v-if="props.user?.adminAccess" class="add-user-button" @click="showAddUserForm">Add User</button>
+    <table v-if="props.user?.adminAccess">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Profile Pic</th>
+          <th>Admin Access</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="user in users" :key="user.email">
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td><img :src="user.profilePic" alt="Profile Picture" class="profile-pic"></td>
+          <td>{{ user.adminAccess }}</td>
+          <td>
+            <button class="action-button" @click="showEditUserForm(user)">Edit</button>
+            <button class="action-button" @click="handleDeleteUser(user.email)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Add User Form -->
+   <div v-if="props.user?.adminAccess"> 
+    <div v-if="showAddForm">
+      <h2>Add User</h2>
+      <form @submit.prevent="handleAddUser">
+        <input v-model="newUser.firstName" placeholder="First Name" required />
+        <input v-model="newUser.lastName" placeholder="Last Name" required />
+        <input v-model="newUser.email" placeholder="Email" required />
+        <input v-model="newUser.profilePic" placeholder="Profile Pic URL" />
+        <label>
+          Admin Access:
+          <input type="checkbox" v-model="newUser.adminAccess" />
+        </label>
+        <button type="submit">Add</button>
+      </form>
+     </div>
+   
+
+    <!-- Edit User Form -->
+    <div v-if="showEditForm">
+      <h2>Edit User</h2>
+      <form @submit.prevent="handleEditUser">
+        <input v-model="editUserForm.firstName" placeholder="First Name" required />
+        <input v-model="editUserForm.lastName" placeholder="Last Name" required />
+        <input v-model="editUserForm.email" placeholder="Email" required />
+        <input v-model="editUserForm.profilePic" placeholder="Profile Pic URL" />
+        <label>
+          Admin Access:
+          <input type="checkbox" v-model="editUserForm.adminAccess" />
+        </label>
+        <button type="submit">Save</button>
+      </form>
+     </div>
     </div>
     <p v-else>You do not have access to view this page. Login as Angela to get access</p>
   </div>
 </template>
 
-<style>
+<style scoped>
 .add-user-button {
   background-color: #007BFF;
   color: #fff;
@@ -75,43 +130,50 @@ const deleteUser = (user: User) => {
   border-radius: 0.3rem;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin : 0;
-  margin-top:1.5rem;
+  margin: 0;
+  margin-top: 1.5rem;
 }
 
 .add-user-button:hover {
   background-color: #0056b3;
 }
+
 .profile-pic {
   width: 5.5rem;
   height: 3.5rem;
   border-radius: 0%;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 0;
 }
+
 th, td {
   border: 1px solid #ddd;
   padding: 0.5rem;
   text-align: left;
-  color:black
+  color: black;
 }
+
 th {
   background-color: #f2f2f2;
 }
+
 button.action-button {
   background: none;
-  border: .2rem solid black;
+  border: 0.2rem solid black;
   cursor: pointer;
-  padding: .5rem;
-  margin-right: .5rem;
-  border-radius: .5rem;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
 }
+
 button.action-button:active {
-   box-shadow: 0 0 .1rem blue;/* Change border color when clicked */
+  box-shadow: 0 0 0.1rem blue; /* Change border color when clicked */
 }
+
 button.action-button i {
   font-size: 1.2rem;
 }
