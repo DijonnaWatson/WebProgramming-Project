@@ -55,7 +55,7 @@ const showEditUserForm = (user: User) => {
 
 <template>
   <div>
-    <h1>Users</h1>
+    <h1>Admin Page - Users</h1>
     <button v-if="props.user?.adminAccess" class="add-user-button" @click="showAddUserForm">Add User</button>
     <table v-if="props.user?.adminAccess">
       <thead>
