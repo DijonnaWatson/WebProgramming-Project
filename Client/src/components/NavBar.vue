@@ -73,7 +73,17 @@ function handleLogout() {
               </RouterLink>
               <div v-if="props.user" class="user-info">
                 <img :src="props.user.profilePic" alt="Profile Picture" class="profile-pic">
-                <span>{{ props.user.firstName }} {{ props.user.lastName }}</span>
+                <div class="navbar-item has-dropdown is-hoverable">
+                  <a class="navbar-link">
+                    <span>{{ props.user.firstName }} {{ props.user.lastName }}</span>
+                  </a> 
+                  <div class="navbar-dropdown"> 
+                      <RouterLink to="/profilemanagement" class="navbar-item">
+                      Profile
+                    </RouterLink>
+                  </div>
+                </div>
+                <!-- <span>{{ props.user.firstName }} {{ props.user.lastName }}</span> -->
                 <button class="button is-light" @click="handleLogout">Log out</button>
               </div>
             </div>
