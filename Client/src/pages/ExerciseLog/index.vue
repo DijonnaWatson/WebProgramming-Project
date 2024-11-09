@@ -12,6 +12,13 @@ const props = defineProps({
 
 const users = ref<User[]>([]);
 const activityLogs = ref<ActivityLog[]>([]);
+const newExercise = ref({ date: '', activity: '', duration: 0, calories: 0, distance: 0 });
+const goal = ref<number | null>(null);
+
+const showAddForm = ref(true);
+const showEditForm = ref(false);
+const editExerciseForm = ref<Partial<ActivityLog>>({});
+let editIndex = ref<number | null>(null);
 
 onMounted(() => {
   const { data } = getAllUsers();
@@ -36,19 +43,32 @@ const filteredExercises = computed(() => {
   return activityLogs.value;
 });
 
-const newExercise = ref({ date: '', activity: '', duration: 0, calories: 0, distance: 0 });
-const goal = ref<number | null>(null);
-
-//Don't know if user should add calories, and distande yet
 const addExercise = () => {
   if (newExercise.value.date && newExercise.value.activity && newExercise.value.duration) {
-    activityLogs.value.push({ ...newExercise.value, calories: newExercise.value.calories, distance: newExercise.value.distance });
+    activityLogs.value.push({ ...newExercise.value });
     newExercise.value = { date: '', activity: '', duration: 0, calories: 0, distance: 0 };
   }
 };
 
 const deleteExercise = (index: number) => {
   activityLogs.value.splice(index, 1);
+};
+
+const showEditExerciseForm = (index: number) => {
+  editExerciseForm.value = { ...activityLogs.value[index] };
+  editIndex.value = index;
+  showEditForm.value = true;
+  showAddForm.value = false;
+};
+
+const editExercise = () => {
+  if (editExerciseForm.value.date && editExerciseForm.value.activity && editExerciseForm.value.duration && editIndex.value !== null) {
+    activityLogs.value[editIndex.value] = { ...editExerciseForm.value } as ActivityLog;
+    showEditForm.value = false;
+    showAddForm.value = true;
+    editExerciseForm.value = {};
+    editIndex.value = null;
+  }
 };
 
 const totalDuration = computed(() => {
@@ -82,6 +102,7 @@ const formatDate = (dateString: string) => {
             <span class="date">{{ formatDate(exercise.date) }}</span>
             <span class="activity">{{ exercise.activity }}</span>
             <span class="duration">{{ exercise.duration }} minutes</span>
+            <button @click="showEditExerciseForm(index)" class="edit-button">Edit</button>
             <button @click="deleteExercise(index)" class="delete-button">Delete</button>
           </li>
         </ul>
@@ -97,11 +118,21 @@ const formatDate = (dateString: string) => {
           <div v-if="totalDuration >= goal" class="goal-achieved">Congratulations! You've reached your goal!</div>
           <div v-else class="goal-pending">Keep going! You need {{ goal - totalDuration }} more minutes to reach your goal.</div>
         </div>
-        <form @submit.prevent="addExercise">
+        
+        <!-- Add Exercise Form -->
+        <form v-if="showAddForm" @submit.prevent="addExercise">
           <input v-model="newExercise.date" type="date" required />
           <input v-model="newExercise.activity" type="text" placeholder="Activity" required />
           <input v-model="newExercise.duration" type="number" placeholder="Duration (minutes)" required />
           <button type="submit">Add Exercise</button>
+        </form>
+        
+        <!-- Edit Exercise Form -->
+        <form v-if="showEditForm" @submit.prevent="editExercise">
+          <input v-model="editExerciseForm.date" type="date" required />
+          <input v-model="editExerciseForm.activity" type="text" placeholder="Activity" required />
+          <input v-model="editExerciseForm.duration" type="number" placeholder="Duration (minutes)" required />
+          <button type="submit">Save Changes</button>
         </form>
       </div>
 
@@ -116,6 +147,8 @@ const formatDate = (dateString: string) => {
     </div>
   </div>
 </template>
+
+
 
 <style scoped>
 .home {
@@ -281,7 +314,7 @@ const formatDate = (dateString: string) => {
 
 .tips-box h2 {
   margin-bottom: 1rem;
-  color: #333;
+  color: black;
   font-size: 2rem;
 }
 
@@ -291,13 +324,24 @@ const formatDate = (dateString: string) => {
 }
 
 .tips-box li {
-  background-color: #f9f9f9;
+  background-color: white;
   padding: 1rem;
   margin-bottom: 0.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
   font-size: 1.2rem;
-  color: #555;
+  color: black;
+}
+
+.edit-button {
+  background-color: #33d1f8;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .delete-button {
