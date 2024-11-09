@@ -5,6 +5,15 @@ const userController = require("./controllers/users");
 
 const PORT = 3000;
 
+//Middleware
+app.use(express.json())
+app.use(express.static(__dirname +"/dist"))//Static, is a middleware that takes a look at every request, way to make an actual web server
+
+
+
+
+//Controllers
+
 app.get("/", (req, res) => {
   res.send("Hello World");
 }).use("/users", userController);
