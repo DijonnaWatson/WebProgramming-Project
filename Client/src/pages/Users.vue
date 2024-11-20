@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAll, create, update,remove, addUser, editUser, deleteUser, type User } from '@/models/users';
+import { getAll, create, update,remove, type User } from '@/models/users';
 
 const props = defineProps<{
   user: User | null;
