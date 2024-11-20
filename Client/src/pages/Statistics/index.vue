@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { getAllUsers } from '@/models/users';
+import { getAll } from '@/models/users';
 import type { User, ActivityLog } from '@/models/users';
 
 const props = defineProps({
@@ -14,8 +14,14 @@ const users = ref<User[]>([]);
 const activityLogs = ref<ActivityLog[]>([]);
 
 onMounted(() => {
-  const { data } = getAllUsers();
-  users.value = data;
+  getAll().then(response => {
+    users.value = response.data;
+    const currentUser = users.value.find(user => user.email === props.user?.email);
+    if (currentUser) {
+      activityLogs.value = currentUser.activityLogs;
+    }
+    console.log("Loaded activity logs:", activityLogs.value);
+  });
   const currentUser = users.value.find(user => user.email === props.user?.email);
   if (currentUser) {
     activityLogs.value = currentUser.activityLogs;

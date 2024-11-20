@@ -1,17 +1,27 @@
 // src/models/users.ts
 import data from '../data/users.json'
-import type { DataListEnvelope } from './dataEnvelope'
+import type { DataEnvelope, DataListEnvelope } from './dataEnvelope'
+import { api } from './myFetch'
 
-export function getAllUsers(): DataListEnvelope<User> {
-  return {
-    data: data.items.map((user: any) => ({
-      ...user,
-      activityLogs: user.activityLogs || [] // Ensure activityLogs is included
-    })),
-    total: data.total
-  }
+export async function getAll() {
+  return api<DataListEnvelope<User>>('users')
 }
 
+export async function getById(id: number) {
+  return api<DataEnvelope<User>>(`users/${id}`)
+}
+
+export function create(user: User) {
+  return api<DataEnvelope<User>>('users', user)
+}
+
+export function update(user: User) {
+  return api<DataEnvelope<User>>(`users/${user.id}`, user, 'PATCH')
+}
+
+export function remove(id: number) {
+  return api<DataEnvelope<User>>(`users/${id}`, undefined, 'DELETE')
+}
 export interface ActivityLog {
   date: string
   activity: string

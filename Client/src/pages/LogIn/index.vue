@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { defineEmits, defineProps } from 'vue';
-import { getAllUsers } from '@/models/users';
+import { getAll } from '@/models/users';
 
 // Define reactive variables for sign-in form data
 const signInEmail = ref('');
@@ -12,8 +12,9 @@ import type { User } from '@/models/users';
 
 const users = ref<User[]>([]);
 onMounted(() => {
-  const { data } = getAllUsers();
-  users.value = data;
+  getAll().then(response => {
+    users.value = response.data;
+  });
 });
 
 // Selected user data

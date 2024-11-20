@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAllUsers, addUser, editUser, deleteUser, type User } from '@/models/users';
+import { getAll, create, update,remove, addUser, editUser, deleteUser, type User } from '@/models/users';
 
 const props = defineProps<{
   user: User | null;
@@ -13,31 +13,35 @@ const newUser = ref<Partial<User>>({});
 const editUserForm = ref<Partial<User>>({});
 
 onMounted(() => {
-  const { data } = getAllUsers();
-  users.value = data;
+  getAll().then(response => {
+    users.value = response.data;
+  });
 });
 
-const handleAddUser = () => {
-  if (newUser.value.firstName && newUser.value.lastName && newUser.value.email) {
-    addUser(newUser.value as User);
-    users.value = getAllUsers().data;
+const handleAddUser = async () => {
+if (newUser.value.firstName && newUser.value.lastName && newUser.value.email) {
+    await create(newUser.value as User);
+    const response = await getAll();
+    users.value = response.data;
     showAddForm.value = false;
     newUser.value = {};
   }
 };
 
-const handleEditUser = () => {
-  if (editUserForm.value.email) {
-    editUser(editUserForm.value.email, editUserForm.value);
-    users.value = getAllUsers().data;
+const handleEditUser = async () => {
+  if (editUserForm.value.id) {
+    await update(editUserForm.value as User);
+    const response = await getAll();
+    users.value = response.data;
     showEditForm.value = false;
     editUserForm.value = {};
   }
 };
 
-const handleDeleteUser = (email: string) => {
-  deleteUser(email);
-  users.value = getAllUsers().data;
+const handleDeleteUser = async (id: number) => {
+  await remove(id);
+  const response = await getAll();
+  users.value = response.data;
 };
 
 const showAddUserForm = () => {
@@ -77,7 +81,7 @@ const showEditUserForm = (user: User) => {
           <td>{{ user.adminAccess }}</td>
           <td>
             <button class="action-button" @click="showEditUserForm(user)">Edit</button>
-            <button class="action-button" @click="handleDeleteUser(user.email)">Delete</button>
+            <button class="action-button" @click="handleDeleteUser(user.id)">Delete</button>
           </td>
         </tr>
       </tbody>

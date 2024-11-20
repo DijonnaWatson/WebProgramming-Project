@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { defineProps } from 'vue';
-import { getAllUsers, type User, type ActivityLog } from '@/models/users';
+import { getAll, type User, type ActivityLog } from '@/models/users';
 
 const props = defineProps({
   user: {
@@ -21,8 +21,13 @@ const editExerciseForm = ref<Partial<ActivityLog>>({});
 let editIndex = ref<number | null>(null);
 
 onMounted(() => {
-  const { data } = getAllUsers();
-  users.value = data;
+  getAll().then(response => {
+    users.value = response.data;
+    const currentUser = users.value.find(user => user.email === props.user?.email);
+    if (currentUser) {
+      activityLogs.value = currentUser.activityLogs;
+    }
+  });
   const currentUser = users.value.find(user => user.email === props.user?.email);
   if (currentUser) {
     activityLogs.value = currentUser.activityLogs;
