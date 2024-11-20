@@ -1,3 +1,21 @@
 
 ###
-GET http://localhost:3000/users
+GET http://localhost:3000/api/v1/users
+
+###
+GET http://localhost:3000/api/v1/users/3
+
+###
+DELETE http://localhost:3000/api/v1/users/1
+
+###
+POST http://localhost:3000/api/v1/users
+Content-Type: application/json
+
+{
+    "firstName": "Moshe",
+    "lastName": "Goldberg",
+    "age": 30,
+    "email": "goldberg@newpaltz.edu",
+    "password": "123456"
+}

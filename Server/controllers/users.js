@@ -1,32 +1,40 @@
 const model = require("../model/users");
 const express = require("express");
-const app = express.Router(); /*almost axactly the same as the default we get from the express function, */
+const app = express.Router();
 
 app
-  .get("/", (req, res) => {
-    //user response obj to send
-    res.send(model.getAll());
+  .get("/", (req, res, next) => {
+    model
+      .getAll()
+      .then((x) => res.send(x))
+      .catch(next);
   })
-
-  /*make a locol variable id that points to the */
-  .get("/:id", (req, res) => {
+  .get("/:id", (req, res, next) => {
     const id = req.params.id;
-    const user = model.get(
-      +id
-    ); /*find calls this function once for every item in items */
-    res.send(user);
+    model
+      .get(+id)
+      .then((x) => res.send(x))
+      .catch(next);
   })
-
-  .patch("/:id", (req, res) => {
+  .post("/", (req, res, next) => {
+    model
+      .add(req.body)
+      .then((x) => res.send(x))
+      .catch(next);
+  })
+  .patch("/:id", (req, res, next) => {
     const id = req.params.id;
-    const user = model.update(+id, req.body);
-    res.send(user);
+    model
+      .update(+id, req.body)
+      .then((x) => res.send(x))
+      .catch(next);
   })
-
-  .delete("/:id", (req, res) => {
+  .delete("/:id", (req, res, next) => {
     const id = req.params.id;
-    const ret = model.remove(+id);
-    res.send(ret);
-  })
+    model
+      .remove(+id)
+      .then((x) => res.send(x))
+      .catch(next);
+  });
 
-  module.exports = app;/*Common JS way of exporting */
+module.exports = app;
