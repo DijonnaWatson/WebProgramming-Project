@@ -16,11 +16,15 @@ const data = require("../data/users.json");
  * @returns {Promise<DataListEnvelope<User>>}
  */
 async function getAll() {
+  const { data, error, count } = await conn
+    .from("products")
+    .select("*", { count: "estimated" }); //* means get all the data in that field
   return {
     isSuccess: true,
-    data: data.items,
-    total: data.items.length,
+    data: data,
+    total: count,
   };
+
 }
 
 /**
@@ -57,12 +61,13 @@ async function add(user) {
  * @returns {Promise<DataEnvelope<User>>}
  */
 async function update(id, user) {
-  const userToUpdate = get(id);
-  Object.assign(userToUpdate, user);
+  const userToUpdate = await get(id);
+  Object.assign(userToUpdate.data, user);
   return {
     isSuccess: true,
-    data: userToUpdate,
+    data: userToUpdate.data,
   };
+
 }
 
 /**
@@ -71,16 +76,11 @@ async function update(id, user) {
  * @returns {Promise<DataEnvelope<number>>}
  */
 async function remove(id) {
-  const itemIndex = data.items.findIndex((user) => user.id == id);
-  if (itemIndex === -1)
-    throw {
-      isSuccess: false,
-      message: "Item not found",
-      data: id,
-      status: 404,
-    };
-  data.items.splice(itemIndex, 1);
-  return { isSuccess: true, message: "Item deleted", data: id };
+   const itemIndex = data.items.findIndex((user) => user.id == id)
+   if (itemIndex === -1)
+     throw { isSuccess: false, message: "Item not found", data: id }
+   data.items.splice(itemIndex, 1);
+   return { isSuccess: true, message: "Item deleted", data: id }
 }
 
 module.exports = {
