@@ -23,8 +23,9 @@ async function getAll() {
   //   data: data.items,
   // };
    const { data, error, count } = await conn
-     .from("users")
-     .select("*", { count: "estimated" });
+      .from("users")
+      .select("*")
+      .order("id", { ascending: true });
    return {
      isSuccess: !error,
      message: error?.message,
