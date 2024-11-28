@@ -1,4 +1,4 @@
-const model = require("../model/users");
+const model = require("/Users/didi/Desktop/WebProgramming-Project/Server/model/users.js");
 const express = require("express");
 const app = express.Router();
 
