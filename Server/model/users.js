@@ -1,5 +1,7 @@
 /** @type {{ items: User[] }} */
 const data = require("../data/users.json");
+const { getConnection } = require("./supabase");
+const conn = getConnection();
 
 /**
  * @template T
@@ -17,14 +19,14 @@ const data = require("../data/users.json");
  */
 async function getAll() {
   const { data, error, count } = await conn
-    .from("products")
-    .select("*", { count: "estimated" }); //* means get all the data in that field
+    .from("users")
+    .select("*", { count: "estimated" });
   return {
-    isSuccess: true,
+    isSuccess: !error,
+    message: error?.message,
     data: data,
     total: count,
   };
-
 }
 
 /**
@@ -33,11 +35,12 @@ async function getAll() {
  * @returns {Promise<DataEnvelope<User>>}
  */
 async function get(id) {
-  const item = data.items.find((user) => user.id == id);
-  return {
-    isSuccess: !!item,
-    data: item,
-  };
+ const { data, error } = await conn.from("users").select("*").eq("id", id);
+ return {
+   isSuccess: !error,
+   message: error?.message,
+   data: data,
+ }
 }
 
 /**
@@ -46,12 +49,13 @@ async function get(id) {
  * @returns {Promise<DataEnvelope<User>>}
  */
 async function add(user) {
-  user.id = data.items.reduce((prev, x) => (x.id > prev ? x.id : prev), 0) + 1;
-  data.items.push(user);
-  return {
-    isSuccess: true,
-    data: user,
-  };
+   user.id =
+     data.user.reduce((prev, x) => (x.id > prev ? x.id : prev), 0) + 1;
+   data.items.push(user);
+   return {
+     isSuccess: true,
+     data: user,
+   }
 }
 
 /**
@@ -67,7 +71,6 @@ async function update(id, user) {
     isSuccess: true,
     data: userToUpdate.data,
   };
-
 }
 
 /**
