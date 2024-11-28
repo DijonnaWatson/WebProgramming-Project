@@ -21,6 +21,7 @@ async function getAll() {
   const { data, error, count } = await conn
     .from("users")
     .select("*", { count: "estimated" });
+
   return {
     isSuccess: !error,
     message: error?.message,
@@ -44,19 +45,34 @@ async function get(id) {
 }
 
 /**
- * Add a new user
+ * Add a user
  * @param {User} user
  * @returns {Promise<DataEnvelope<User>>}
  */
 async function add(user) {
-   user.id =
-     data.user.reduce((prev, x) => (x.id > prev ? x.id : prev), 0) + 1;
-   data.items.push(user);
-   return {
-     isSuccess: true,
-     data: user,
-   }
+  // Ensure user.activityLogs is an array before calling reduce
+  // if (!Array.isArray(user.activityLogs)) {
+  //   user.activityLogs = [];
+  // }
+
+  const { data: insertedData, error } = await conn
+    .from("users")
+    .insert([user]);
+
+  if (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+      data: null,
+    };
+  }
+
+  return {
+    isSuccess: true,
+    data: insertedData[0],
+  };
 }
+
 
 /**
  * Update a user
