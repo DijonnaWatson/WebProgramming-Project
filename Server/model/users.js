@@ -40,18 +40,30 @@ async function getAll() {
  * @returns {Promise<DataEnvelope<User>>}
  */
 async function get(id) {
-  const user = data.items.find((user) => user.id == id);
-  if (!user) {
-    return {
-      isSuccess: false,
-      message: "User not found",
-      data: null,
-    };
-  }
+  const { data, error } = await conn
+    .from("users")
+    .select("*, activityLogs(*)")
+    .eq("id", id)
+    .single();
   return {
-    isSuccess: true,
-    data: user,
+    isSuccess: !error,
+    message: error?.message,
+    data: data,
   };
+
+  // const user = data.items.find((user) => user.id == id);
+  // if (!user) {
+  //   return {
+  //     isSuccess: false,
+  //     message: "User not found",
+  //     data: null,
+  //   };
+  // }
+  // return {
+  //   isSuccess: true,
+  //   data: user,
+  // };
+
   // const { data, error } = await conn.from("users").select("*").eq("id", id);
   // return {
   //   isSuccess: !error,
@@ -66,6 +78,42 @@ async function get(id) {
  * @returns {Promise<DataEnvelope<User>>}
  */
 async function add(user) {
+  const { data, error } = await conn
+    .from("users")
+    .insert([
+      {
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        profilePic: user.profilePic,
+        adminAccess: user.adminAccess,
+      },
+    ])
+    .select("*")
+    .single();
+
+  if (user.activityLogs?.length) {
+    await conn
+      .from("activityLogs")
+      .insert(
+        user.activityLogs.map((activityLog) => ({
+          userId: data.id,
+          date: activityLog.date,
+          activity: activityLog.activity,
+          duration: activityLog.duration,
+          calories: activityLog.calories,
+          distance: activityLog.distance,
+        }))
+      )
+      .select("*");
+  }
+
+  return {
+    isSuccess: !error,
+    message: error?.message,
+    data: data,
+  };
+
   // const id = data.items.length + 1;
   // user.id = id;
   // data.items.push(user);
@@ -73,12 +121,18 @@ async function add(user) {
   //   isSuccess: true,
   //   data: user,
   // };
-  const { data, error } = await conn.from("users").insert([user]);
-  return {
-    isSuccess: !error,
-    message: error?.message,
-    data: data,
-  };
+  // const { data, error } = await conn.from("users").insert([user]);
+  // return {
+  //   isSuccess: !error,
+  //   message: error?.message,
+  //   data: data,
+  // };
+}//end of add function
+
+async function seed() {
+  for (const user of data.items) {
+    await add(user);
+  }
 }
 
 
@@ -116,4 +170,5 @@ module.exports = {
   add,
   update,
   remove,
+  seed,
 };
