@@ -16,6 +16,20 @@ GET http://localhost:3000/api/v1/users/5
 DELETE http://localhost:3000/api/v1/users/5
 
 
+# ###
+# POST http://localhost:3000/api/v1/activityLogs
+# Content-Type: application/json
+
+# {
+#     "userId": 6,
+#     "date": "2024-11-18",
+#     "activity": "Swimming",
+#     "duration": 30,
+#     "distance": 10,
+#     "calories": 300
+# }
+
+
 ###
 POST http://localhost:3000/api/v1/users
 Content-Type: application/json

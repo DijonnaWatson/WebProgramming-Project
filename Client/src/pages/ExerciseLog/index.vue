@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { defineProps } from 'vue';
-import { getAll, type User, type ActivityLog } from '@/models/users';
+import { getAll, addActivityLog, removeActivityLog, updateActivityLog, type User, type ActivityLog } from '@/models/users';
 
 const props = defineProps({
   user: {
@@ -12,7 +12,7 @@ const props = defineProps({
 
 const users = ref<User[]>([]);
 const activityLogs = ref<ActivityLog[]>([]);
-const newExercise = ref({ date: '', activity: '', duration: 0, calories: 0, distance: 0 });
+const newExercise = ref<ActivityLog>({ date: '', activity: '', duration: 0, calories: 0, distance: 0 });
 const goal = ref<number | null>(null);
 
 const showAddForm = ref(true);
@@ -20,14 +20,9 @@ const showEditForm = ref(false);
 const editExerciseForm = ref<Partial<ActivityLog>>({});
 let editIndex = ref<number | null>(null);
 
-onMounted(() => {
-  getAll().then(response => {
-    users.value = response.data;
-    const currentUser = users.value.find(user => user.email === props.user?.email);
-    if (currentUser) {
-      activityLogs.value = currentUser.activityLogs;
-    }
-  });
+onMounted(async () => {
+  const response = await getAll();
+  users.value = response.data;
   const currentUser = users.value.find(user => user.email === props.user?.email);
   if (currentUser) {
     activityLogs.value = currentUser.activityLogs;
@@ -48,15 +43,40 @@ const filteredExercises = computed(() => {
   return activityLogs.value;
 });
 
-const addExercise = () => {
+const addExercise = async () => {
+  console.log('Adding exercise:', newExercise.value);
   if (newExercise.value.date && newExercise.value.activity && newExercise.value.duration) {
-    activityLogs.value.push({ ...newExercise.value });
-    newExercise.value = { date: '', activity: '', duration: 0, calories: 0, distance: 0 };
+    const currentUser = users.value.find(user => user.email === props.user?.email);
+    if (currentUser) {
+      console.log('Current user found:', currentUser);
+      const response = await addActivityLog(currentUser.id, newExercise.value);
+      console.log('API response:', response);
+      if (response.isSuccess) {
+        activityLogs.value.push({ ...newExercise.value } as ActivityLog);
+        newExercise.value = { date: '', activity: '', duration: 0, calories: 0, distance: 0 };
+        console.log('Exercise added successfully');
+      } else {
+        console.error('Error adding exercise:', response.message);
+      }
+    } else {
+      console.error('Current user not found');
+    }
+  } else {
+    console.error('Invalid exercise data:', newExercise.value);
   }
 };
 
-const deleteExercise = (index: number) => {
-  activityLogs.value.splice(index, 1);
+const deleteExercise = async (index: number) => {
+  const currentUser = users.value.find(user => user.email === props.user?.email);
+  if (currentUser) {
+    const exercise = activityLogs.value[index];
+    const response = await removeActivityLog(currentUser.id, exercise);
+    if (response.isSuccess) {
+      activityLogs.value.splice(index, 1);
+    } else {
+      console.error('Error deleting exercise:', response.message);
+    }
+  }
 };
 
 const showEditExerciseForm = (index: number) => {
@@ -66,13 +86,27 @@ const showEditExerciseForm = (index: number) => {
   showAddForm.value = false;
 };
 
-const editExercise = () => {
-  if (editExerciseForm.value.date && editExerciseForm.value.activity && editExerciseForm.value.duration && editIndex.value !== null) {
-    activityLogs.value[editIndex.value] = { ...editExerciseForm.value } as ActivityLog;
-    showEditForm.value = false;
-    showAddForm.value = true;
-    editExerciseForm.value = {};
-    editIndex.value = null;
+const editExercise = async () => {
+  if (editIndex.value !== null) {
+    const currentUser = users.value.find(user => user.email === props.user?.email);
+    if (currentUser) {
+      const updatedExercise: ActivityLog = {
+        date: editExerciseForm.value.date || '',
+        activity: editExerciseForm.value.activity || '',
+        duration: editExerciseForm.value.duration || 0,
+        calories: editExerciseForm.value.calories || 0,
+        distance: editExerciseForm.value.distance || 0,
+      };
+      const response = await updateActivityLog(currentUser.id, updatedExercise);
+      if (response.isSuccess) {
+        activityLogs.value[editIndex.value] = updatedExercise;
+        editIndex.value = null;
+        showEditForm.value = false;
+        showAddForm.value = true;
+      } else {
+        console.error('Error editing exercise:', response.message);
+      }
+    }
   }
 };
 
@@ -129,6 +163,8 @@ const formatDate = (dateString: string) => {
           <input v-model="newExercise.date" type="date" required />
           <input v-model="newExercise.activity" type="text" placeholder="Activity" required />
           <input v-model="newExercise.duration" type="number" placeholder="Duration (minutes)" required />
+          <input v-model="newExercise.calories" type="number" placeholder="Calories" required />
+          <input v-model="newExercise.distance" type="number" placeholder="Distance (km)" required />
           <button type="submit">Add Exercise</button>
         </form>
         
@@ -137,6 +173,8 @@ const formatDate = (dateString: string) => {
           <input v-model="editExerciseForm.date" type="date" required />
           <input v-model="editExerciseForm.activity" type="text" placeholder="Activity" required />
           <input v-model="editExerciseForm.duration" type="number" placeholder="Duration (minutes)" required />
+          <input v-model="editExerciseForm.calories" type="number" placeholder="Calories" required />
+          <input v-model="editExerciseForm.distance" type="number" placeholder="Distance (km)" required />
           <button type="submit">Save Changes</button>
         </form>
       </div>
@@ -152,7 +190,6 @@ const formatDate = (dateString: string) => {
     </div>
   </div>
 </template>
-
 
 
 <style scoped>

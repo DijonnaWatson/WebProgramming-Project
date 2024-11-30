@@ -126,21 +126,72 @@ async function add(user) {
     message: error?.message,
     data: data,
   };
-
-  // const id = data.items.length + 1;
-  // user.id = id;
-  // data.items.push(user);
-  // return {
-  //   isSuccess: true,
-  //   data: user,
-  // };
-  // const { data, error } = await conn.from("users").insert([user]);
-  // return {
-  //   isSuccess: !error,
-  //   message: error?.message,
-  //   data: data,
-  // };
 }//end of add function
+
+// //function for handling when a new activty log is added
+// /**
+//  * Add an activity log to a user
+//  * @param {number} userId
+//  * @param {object} activityLog
+//  * @returns {Promise<DataEnvelope<User>>}
+//  */
+// async function addActivityLog(userId, activityLog) {
+//   // Fetch the current activity logs
+//   const { data: user, error: fetchError } = await conn
+//     .from("users")
+//     .select("activityLogs")
+//     .eq("id", userId)
+//     .single();
+
+//   if (fetchError) {
+//     return {
+//       isSuccess: false,
+//       message: fetchError.message,
+//       data: null,
+//     };
+//   }
+
+//   // Add the new activity log
+//   const updatedActivityLogs = [...user.activityLogs, activityLog];
+
+//   // Update the user's activity logs
+//   await conn
+//     .from("users")
+//     .update({ activityLogs: updatedActivityLogs })
+//     .eq("id", userId)
+//     .select("*")
+//     .single();
+
+//   //Insert the activity log into the `activityLogs` table
+//   const { data, error: logError } = await conn
+//     .from("activityLogs")
+//     .insert([
+//       {
+//         userId: userId,
+//         date: activityLog.date,
+//         activity: activityLog.activity,
+//         duration: activityLog.duration,
+//         distance: activityLog.distance,
+//         calories: activityLog.calories,
+//       },
+//     ])
+//     .select("*")
+//     .single();
+
+//   if (logError) {
+//     return {
+//       isSuccess: false,
+//       message: logError.message,
+//       data: null,
+//     };
+//   }
+
+//   return {
+//     isSuccess: true,
+//     data: data,
+//   };
+// }
+
 
 async function seed() {
   for (const user of data.items) {
@@ -212,6 +263,160 @@ async function remove(id) {
   };
 }
 
+
+
+/**
+ * Add an activity log to a user
+ * @param {number} userId
+ * @param {object} activityLog
+ * @returns {Promise<DataEnvelope<User>>}
+ */
+async function addActivityLog(userId, activityLog) {
+  // Fetch the current activity logs
+  const { data: user, error: fetchError } = await conn
+    .from("users")
+    .select("activityLogs")
+    .eq("id", userId)
+    .single();
+
+  if (fetchError) {
+    return {
+      isSuccess: false,
+      message: fetchError.message,
+      data: null,
+    };
+  }
+
+  // Add the new activity log
+  const updatedActivityLogs = [...user.activityLogs, activityLog];
+
+  // Update the user's activity logs
+  const { data, error } = await conn
+    .from("users")
+    .update({ activityLogs: updatedActivityLogs })
+    .eq("id", userId)
+    .select("*")
+    .single();
+
+  if (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+      data: null,
+    };
+  }
+
+  return {
+    isSuccess: true,
+    data: data,
+  };
+}
+
+/**
+ * Remove an activity log from a user
+ * @param {number} userId
+ * @param {object} activityLog
+ * @returns {Promise<DataEnvelope<User>>}
+ */
+async function removeActivityLog(userId, activityLog) {
+  // Fetch the current activity logs
+  const { data: user, error: fetchError } = await conn
+    .from("users")
+    .select("activityLogs")
+    .eq("id", userId)
+    .single();
+
+  if (fetchError) {
+    return {
+      isSuccess: false,
+      message: fetchError.message,
+      data: null,
+    };
+  }
+
+  // Remove the activity log
+  const updatedActivityLogs = user.activityLogs.filter(
+    (log) =>
+      log.date !== activityLog.date || log.activity !== activityLog.activity
+  );
+
+  // Update the user's activity logs
+  const { data, error } = await conn
+    .from("users")
+    .update({ activityLogs: updatedActivityLogs })
+    .eq("id", userId)
+    .select("*")
+    .single();
+
+  if (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+      data: null,
+    };
+  }
+
+  return {
+    isSuccess: true,
+    data: data,
+  };
+}
+
+/**
+ * Update an activity log for a user
+ * @param {number} userId
+ * @param {object} activityLog
+ * @returns {Promise<DataEnvelope<User>>}
+ */
+async function updateActivityLog(userId, activityLog) {
+  // Fetch the current activity logs
+  const { data: user, error: fetchError } = await conn
+    .from("users")
+    .select("activityLogs")
+    .eq("id", userId)
+    .single();
+
+  if (fetchError) {
+    return {
+      isSuccess: false,
+      message: fetchError.message,
+      data: null,
+    };
+  }
+
+  // Update the activity log
+  const updatedActivityLogs = user.activityLogs.map((log) =>
+    log.date === activityLog.date && log.activity === activityLog.activity
+      ? activityLog
+      : log
+  );
+
+  // Update the user's activity logs
+  const { data, error } = await conn
+    .from("users")
+    .update({ activityLogs: updatedActivityLogs })
+    .eq("id", userId)
+    .select("*")
+    .single();
+
+  if (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+      data: null,
+    };
+  }
+
+  return {
+    isSuccess: true,
+    data: data,
+  };
+}
+
+
+
+
+
 module.exports = {
   getAll,
   get,
@@ -219,4 +424,8 @@ module.exports = {
   update,
   remove,
   seed,
+  addActivityLog,
+  removeActivityLog,
+  updateActivityLog,
+  //addActivityLog,
 };

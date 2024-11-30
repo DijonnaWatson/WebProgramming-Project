@@ -37,10 +37,33 @@ app
       .catch(next);
   })
   .post("/seed", (req, res, next) => {
-        model
-            .seed()
-            .then((x) => res.send(x))
-            .catch(next)
-    })
+    model
+      .seed()
+      .then((x) => res.send(x))
+      .catch(next);
+  })
+  .post("/:id/activityLogs", (req, res, next) => {
+    const id = req.params.id;
+    model
+      .addActivityLog(+id, req.body)
+      .then((x) => res.send(x))
+      .catch(next);
+  })
+  .delete("/:id/activityLogs", (req, res, next) => {
+    const id = req.params.id;
+    model
+      .removeActivityLog(+id, req.body)
+      .then((x) => res.send(x))
+      .catch(next);
+  })
+  .patch("/:id/activityLogs", (req, res, next) => {
+    const id = req.params.id;
+    model
+      .updateActivityLog(+id, req.body)
+      .then((x) => res.send(x))
+      .catch(next);
+  });
+
+  
 
 module.exports = app;

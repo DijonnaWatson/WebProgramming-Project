@@ -22,6 +22,75 @@ export function update(user: User) {
 export function remove(id: number) {
   return api<DataEnvelope<User>>(`users/${id}`, undefined, 'DELETE')
 }
+
+//Exercise Log Functions
+
+export async function addActivityLog(userId: number, activityLog: ActivityLog) {
+
+    return await api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, {
+      method: 'POST',
+      body: JSON.stringify(activityLog)
+    })
+  
+}
+
+export async function removeActivityLog(userId: number, activityLog: ActivityLog) {
+  
+    return await api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, {
+      method: 'DELETE',
+      body: JSON.stringify(activityLog)
+    })
+  
+  
+}
+
+export async function updateActivityLog(userId: number, activityLog: ActivityLog) {
+
+    return await api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, {
+      method: 'PATCH',
+      body: JSON.stringify(activityLog)
+    })
+  
+}
+
+// export function addUserExercise(userId: number, activityLog: ActivityLog) {
+//   return api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, activityLog)
+// }
+
+// export function updateUserExercise(
+//   userId: number,
+//   date: string,
+//   activity: string,
+//   activityLog: ActivityLog
+// ) {
+//   return api<DataEnvelope<ActivityLog>>(
+//     `users/${userId}/activityLogs`, // Use the userId and the activityLogs endpoint
+//     { ...activityLog, date, activity }, // Pass the updated activityLog and identifier parameters
+//     'PATCH'
+//   )
+// }
+
+
+// // users.ts
+// export function removeUserExercise(date: string, activity: string) {
+//   return api<DataEnvelope<User>>(
+//     `users/activityLogs`,
+//     {
+//       date,
+//       activity
+//     },
+//     'DELETE'
+//   )
+// }
+
+// export function removeUserExercise(userId: number, exerciseId: number) {
+//   return api<DataEnvelope<ActivityLog>>(
+//     `users/${userId}/activityLogs/${exerciseId}`,
+//     undefined,
+//     'DELETE'
+//   )
+// }
+
 export interface ActivityLog {
   date: string
   activity: string
