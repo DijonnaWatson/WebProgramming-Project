@@ -23,10 +23,22 @@ async function getAll() {
   //   data: data.items,
   // };
    const { data, error, count } = await conn
-      .from("users")
-      .select("*")
-      .order("id", { ascending: true });
-   return {
+     .from("users")
+     .select("*, activityLogs(*)", { count: "estimated" });
+   
+     
+   
+    //   if (error) {
+    //   console.error("Error fetching users:", error.message);
+    //   return {
+    //     isSuccess: false,
+    //     message: error.message,
+    //     data: [],
+    //     total: 0,
+    //   };
+    // }
+
+    return {
      isSuccess: !error,
      message: error?.message,
      data: data,
@@ -87,6 +99,7 @@ async function add(user) {
         lastName: user.lastName,
         profilePic: user.profilePic,
         adminAccess: user.adminAccess,
+        activityLogs: user.activityLogs,
       },
     ])
     .select("*")
@@ -143,12 +156,40 @@ async function seed() {
  * @returns {Promise<DataEnvelope<User>>}
  */
 async function update(id, user) {
-  const userToUpdate = await get(id);
-  Object.assign(userToUpdate.data, user);
+  const { data, error } = await conn
+    .from("users")
+    .update({
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      profilePic: user.profilePic,
+      adminAccess: user.adminAccess,
+    })
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  // if (user.activityLogs?.length) {
+  //   await conn
+  //     .from("activityLogs")
+  //     .upsert(
+  //       user.activityLogs.map((activityLog) => ({
+  //         userId: data.id,
+  //         date: activityLog.date,
+  //         activity: activityLog.activity,
+  //         duration: activityLog.duration,
+  //         calories: activityLog.calories,
+  //         distance: activityLog.distance,
+  //       }))
+  //     )
+  //     .select("*");
+  // }
+
   return {
-    isSuccess: true,
-    data: userToUpdate.data,
-  };
+    isSuccess: !error,
+    message: error?.message,
+    data: data,
+  }
 }
 
 /**
@@ -157,11 +198,18 @@ async function update(id, user) {
  * @returns {Promise<DataEnvelope<number>>}
  */
 async function remove(id) {
-   const itemIndex = data.items.findIndex((user) => user.id == id)
-   if (itemIndex === -1)
-     throw { isSuccess: false, message: "Item not found", data: id }
-   data.items.splice(itemIndex, 1);
-   return { isSuccess: true, message: "Item deleted", data: id }
+  const { data, error } = await conn
+    .from("users")
+    .delete()
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  return {
+    isSuccess: !error,
+    message: error?.message,
+    data: data,
+  };
 }
 
 module.exports = {
