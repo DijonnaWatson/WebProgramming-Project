@@ -26,31 +26,15 @@ export function remove(id: number) {
 //Exercise Log Functions
 
 export async function addActivityLog(userId: number, activityLog: ActivityLog) {
-
-    return await api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, {
-      method: 'POST',
-      body: JSON.stringify(activityLog)
-    })
-  
+  return await api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, activityLog, 'POST')
 }
 
 export async function removeActivityLog(userId: number, activityLog: ActivityLog) {
-  
-    return await api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, {
-      method: 'DELETE',
-      body: JSON.stringify(activityLog)
-    })
-  
-  
+  return await api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, activityLog, 'DELETE')
 }
 
 export async function updateActivityLog(userId: number, activityLog: ActivityLog) {
-
-    return await api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, {
-      method: 'PATCH',
-      body: JSON.stringify(activityLog)
-    })
-  
+  return await api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, activityLog, 'PATCH')
 }
 
 // export function addUserExercise(userId: number, activityLog: ActivityLog) {
