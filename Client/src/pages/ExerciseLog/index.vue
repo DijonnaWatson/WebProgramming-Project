@@ -67,15 +67,22 @@ const addExercise = async () => {
 };
 
 const deleteExercise = async (index: number) => {
+  console.log('Deleting exercise at index:', index);
   const currentUser = users.value.find(user => user.email === props.user?.email);
   if (currentUser) {
+     console.log('Current user found:', currentUser);
     const exercise = activityLogs.value[index];
+   console.log('Exercise to delete:', exercise);
     const response = await removeActivityLog(currentUser.id, exercise);
+    console.log('API response:', response);
     if (response.isSuccess) {
       activityLogs.value.splice(index, 1);
+      console.log('Exercise deleted successfully');
     } else {
       console.error('Error deleting exercise:', response.message);
     }
+  }else {
+    console.error('Current user not found');
   }
 };
 
@@ -87,9 +94,11 @@ const showEditExerciseForm = (index: number) => {
 };
 
 const editExercise = async () => {
+   console.log('Editing exercise:', editExerciseForm.value);
   if (editIndex.value !== null) {
     const currentUser = users.value.find(user => user.email === props.user?.email);
     if (currentUser) {
+      console.log('Current user found:', currentUser);
       const updatedExercise: ActivityLog = {
         date: editExerciseForm.value.date || '',
         activity: editExerciseForm.value.activity || '',
@@ -97,16 +106,23 @@ const editExercise = async () => {
         calories: editExerciseForm.value.calories || 0,
         distance: editExerciseForm.value.distance || 0,
       };
+      console.log('Updated exercise:', updatedExercise);
       const response = await updateActivityLog(currentUser.id, updatedExercise);
+      console.log('API response:', response);
       if (response.isSuccess) {
         activityLogs.value[editIndex.value] = updatedExercise;
         editIndex.value = null;
         showEditForm.value = false;
         showAddForm.value = true;
+        console.log('Exercise edited successfully');
       } else {
         console.error('Error editing exercise:', response.message);
       }
+    } else {
+      console.error('Current user not found');
     }
+  } else {
+    console.error('Invalid edit index:', editIndex.value);
   }
 };
 
