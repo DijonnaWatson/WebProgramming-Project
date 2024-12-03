@@ -89,7 +89,7 @@ async function add(user) {
         lastName: user.lastName,
         profilePic: user.profilePic,
         adminAccess: user.adminAccess,
-        activityLogs: user.activityLogs,
+        activityLogs: user.activityLogs||[],
       },
     ])
     .select("*")
