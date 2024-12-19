@@ -37,6 +37,10 @@ export async function updateActivityLog(userId: number, activityLog: ActivityLog
   return await api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, activityLog, 'PATCH')
 }
 
+export async function search(query: string) {
+  return await api<DataListEnvelope<ActivityLog>>(`users/search?q={query}`)
+}
+
 // export function addUserExercise(userId: number, activityLog: ActivityLog) {
 //   return api<DataEnvelope<ActivityLog>>(`users/${userId}/activityLogs`, activityLog)
 // }

@@ -29,6 +29,8 @@ onMounted(async () => {
   }
 });
 
+
+
 const dailyTip = ref('Stay hydrated and drink at least 8 glasses of water a day.');
 const exerciseTips = ref([
   'Warm up before exercising to prevent injuries.',

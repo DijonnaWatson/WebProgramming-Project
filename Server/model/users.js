@@ -36,6 +36,28 @@ async function getAll() {
    };
 }
 
+async function search(query){
+  const { data, error, count } = await conn
+    .from("users")
+    .select("*", { count: "estimated" })
+    // .or(
+    //    `title.ilike.%${query}%`
+    // )
+    //  .ilike("firstName", `%${query}%`)
+    // .or(`lastName`, `ilike`, `%${query}%`)
+    // .or(`email`, `ilike`, `%${query}%`)
+    // .or(`adminAccess`, `ilike`, `%${query}%`)
+    // .or(`profilePic`, `ilike`, `%${query}%`)
+    .ilike("activityLogs", `%${query}%`)
+    // .single();
+  return {
+    isSuccess: !error,
+    message: error?.message,
+    data: data,
+    total: count,
+  };
+}
+
 /**
  * Get a user by id
  * @param {number} id
@@ -397,4 +419,5 @@ module.exports = {
   addActivityLog,
   removeActivityLog,
   updateActivityLog,
+  search
 };
